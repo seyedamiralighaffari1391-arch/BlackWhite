@@ -1,0 +1,3151 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>AmirAli Studio | استودیوی هوشمند محتوا</title>
+<style>
+@font-face{font-family:'Vazirmatn';src:url('fonts/Vazirmatn-Black.woff2') format('woff2'),url('fonts/Vazirmatn-Black.ttf') format('truetype');font-weight:100 900;font-display:swap}
+:root{
+  --bg:#fafafa;--panel:#fff;--p2:#f5f5f5;--p3:#ebebeb;
+  --bd:#e5e5e5;--bd2:#d4d4d4;
+  --tx:#171717;--tx2:#000;--mu:#737373;--mu2:#a3a3a3;
+  --ac:#000;--ac2:#171717;--acS:rgba(0,0,0,.06);--acS2:rgba(0,0,0,.14);
+  --ok:#16a34a;--okS:rgba(22,163,74,.1);
+  --er:#dc2626;--erS:rgba(220,38,38,.08);
+  --sh1:0 1px 3px rgba(0,0,0,.05);--sh2:0 4px 16px rgba(0,0,0,.08);--sh3:0 20px 50px rgba(0,0,0,.15);
+}
+[data-theme="dark"]{
+  --bg:#0a0a0a;--panel:#171717;--p2:#262626;--p3:#333;
+  --bd:#262626;--bd2:#404040;
+  --tx:#fafafa;--tx2:#fff;--mu:#a3a3a3;--mu2:#737373;
+  --ac:#fff;--ac2:#f5f5f5;--acS:rgba(255,255,255,.08);--acS2:rgba(255,255,255,.16);
+  --ok:#22c55e;--okS:rgba(34,197,94,.12);
+  --er:#ef4444;--erS:rgba(239,68,68,.12);
+  --sh1:0 1px 3px rgba(0,0,0,.3);--sh2:0 4px 16px rgba(0,0,0,.4);--sh3:0 20px 50px rgba(0,0,0,.6);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;overflow:hidden}
+body{font-family:'Vazirmatn',Tahoma,sans-serif;background:var(--bg);color:var(--tx);-webkit-font-smoothing:antialiased;transition:background .2s,color .2s}
+button{font-family:inherit;cursor:pointer;border:none;background:none;color:inherit}
+input,textarea,select{font-family:inherit;color:inherit}
+::selection{background:var(--ac);color:var(--bg)}
+::-webkit-scrollbar{width:8px;height:8px}
+::-webkit-scrollbar-thumb{background:var(--bd2);border-radius:4px}
+
+/* Buttons */
+.btn{display:inline-flex;align-items:center;gap:6px;padding:8px 14px;border-radius:9px;font-size:12.5px;font-weight:600;border:1px solid var(--bd);background:var(--panel);color:var(--tx);transition:.15s;white-space:nowrap}
+.btn:hover{background:var(--p2);border-color:var(--bd2)}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+.btn-p{background:var(--ac);color:var(--bg);border-color:var(--ac)}
+.btn-p:hover{opacity:.85;background:var(--ac);border-color:var(--ac)}
+.btn-g{background:transparent;border-color:transparent}
+.btn-g:hover{background:var(--p2)}
+.btn-d{color:var(--er);border-color:var(--bd)}
+.btn-d:hover{background:var(--erS);border-color:var(--er)}
+.icon-btn{width:34px;height:34px;display:grid;place-items:center;border-radius:8px;border:1px solid var(--bd);background:var(--panel);color:var(--tx);font-size:14px;transition:.15s}
+.icon-btn:hover{background:var(--p2);border-color:var(--bd2)}
+.panda{width:28px;height:28px;border-radius:50%;object-fit:cover;border:1.5px solid var(--bd2);background:var(--panel)}
+
+/* Layout */
+.view{width:100%;height:100vh;display:none;flex-direction:column;overflow:hidden}
+.view.active{display:flex}
+
+/* ═══════ DASHBOARD ═══════ */
+#dashboard{flex-direction:row}
+#dashSidebar{width:240px;flex:0 0 240px;background:var(--panel);border-left:1px solid var(--bd);display:flex;flex-direction:column;overflow:hidden}
+#dashSidebar.hide{display:none}
+.dash-brand{display:flex;align-items:center;gap:10px;padding:18px 16px;font-weight:800;font-size:15px;border-bottom:1px solid var(--bd);cursor:pointer}
+.dash-brand .bw{letter-spacing:-.3px}
+.dash-nav{flex:1;overflow-y:auto;padding:10px 8px}
+.nav-item{display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:8px;font-size:13px;font-weight:500;color:var(--tx);cursor:pointer;transition:.12s;margin-bottom:2px}
+.nav-item:hover{background:var(--p2)}
+.nav-item.active{background:var(--acS);color:var(--ac);font-weight:700}
+.nav-item .ic{font-size:15px;width:20px;text-align:center}
+.nav-item .cnt{margin-right:auto;font-size:10.5px;background:var(--p3);padding:1px 7px;border-radius:10px;color:var(--mu);font-weight:600}
+.nav-item.active .cnt{background:var(--ac);color:var(--bg)}
+.nav-sep{height:1px;background:var(--bd);margin:10px 8px}
+.nav-title{font-size:10px;font-weight:700;color:var(--mu2);padding:8px 12px 4px;letter-spacing:.5px;text-transform:uppercase}
+.dash-user{padding:12px;border-top:1px solid var(--bd);display:flex;align-items:center;gap:10px;font-size:12px;cursor:pointer}
+.dash-user:hover{background:var(--p2)}
+.dash-user .avatar{width:32px;height:32px;border-radius:50%;background:var(--ac);color:var(--bg);display:grid;place-items:center;font-weight:800;font-size:13px}
+
+#dashMain{flex:1;display:flex;flex-direction:column;overflow:hidden;min-width:0}
+.dash-header{padding:14px 24px;border-bottom:1px solid var(--bd);display:flex;align-items:center;gap:12px;background:var(--panel)}
+.dash-header h1{font-size:18px;font-weight:800}
+.dash-search{flex:1;max-width:400px;position:relative;margin-right:auto}
+.dash-search input{width:100%;padding:9px 36px 9px 14px;border:1px solid var(--bd);background:var(--p2);border-radius:9px;font-size:12.5px;outline:none}
+.dash-search input:focus{border-color:var(--ac);background:var(--panel)}
+.dash-search .si{position:absolute;right:12px;top:50%;transform:translateY(-50%);color:var(--mu2);font-size:13px;pointer-events:none}
+.dash-header-actions{display:flex;gap:6px}
+
+.dash-body{flex:1;overflow-y:auto;padding:28px}
+.dash-section{margin-bottom:32px}
+.dash-section-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+.dash-section-head h2{font-size:15px;font-weight:800;color:var(--tx2)}
+.dash-section-head .link{font-size:11.5px;color:var(--mu);font-weight:600;cursor:pointer}
+.dash-section-head .link:hover{color:var(--ac)}
+
+/* Create cards */
+.create-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:32px}
+@media(max-width:1100px){.create-grid{grid-template-columns:repeat(2,1fr)}}
+.create-card{padding:22px 18px;border:1.5px dashed var(--bd);border-radius:14px;background:var(--panel);cursor:pointer;transition:.18s;text-align:right;position:relative;overflow:hidden}
+.create-card:hover{border-color:var(--ac);border-style:solid;transform:translateY(-2px);box-shadow:var(--sh2)}
+.create-card.ai{background:linear-gradient(135deg,var(--panel),var(--acS));border-style:solid;border-color:var(--ac)}
+.create-card .ic{width:42px;height:42px;border-radius:11px;background:var(--acS);display:grid;place-items:center;font-size:20px;margin-bottom:12px}
+.create-card.ai .ic{background:var(--ac);color:var(--bg)}
+.create-card h3{font-size:13.5px;font-weight:800;margin-bottom:4px}
+.create-card p{font-size:11.5px;color:var(--mu);line-height:1.5}
+
+/* Projects grid */
+.proj-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:14px}
+.proj-card{background:var(--panel);border:1px solid var(--bd);border-radius:12px;overflow:hidden;cursor:pointer;transition:.15s;position:relative}
+.proj-card:hover{border-color:var(--bd2);box-shadow:var(--sh2);transform:translateY(-2px)}
+.proj-thumb{aspect-ratio:16/10;background:var(--p2);display:grid;place-items:center;font-size:40px;position:relative;border-bottom:1px solid var(--bd)}
+.proj-thumb .type-badge{position:absolute;top:8px;right:8px;padding:3px 8px;background:rgba(0,0,0,.7);color:#fff;font-size:9.5px;font-weight:700;border-radius:5px}
+.proj-info{padding:12px 14px}
+.proj-title{font-size:13px;font-weight:700;margin-bottom:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.proj-meta{font-size:10.5px;color:var(--mu)}
+.proj-acts{position:absolute;top:8px;left:8px;display:flex;gap:3px;opacity:0;transition:.15s}
+.proj-card:hover .proj-acts{opacity:1}
+.proj-acts button{width:24px;height:24px;border-radius:6px;background:rgba(0,0,0,.75);color:#fff;font-size:11px;display:grid;place-items:center}
+.proj-acts button:hover{background:rgba(0,0,0,.95)}
+
+/* Templates grid */
+.tmpl-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:14px}
+.tmpl-card{background:var(--panel);border:1px solid var(--bd);border-radius:12px;overflow:hidden;cursor:pointer;transition:.15s}
+.tmpl-card:hover{border-color:var(--ac);box-shadow:var(--sh2);transform:translateY(-2px)}
+.tmpl-thumb{aspect-ratio:16/9;display:grid;place-items:center;font-size:36px;font-weight:900;color:rgba(255,255,255,.9);padding:20px;text-align:center;font-size:12px;line-height:1.4}
+.tmpl-info{padding:10px 12px}
+.tmpl-name{font-size:12.5px;font-weight:700;margin-bottom:2px}
+.tmpl-cat{font-size:10.5px;color:var(--mu)}
+
+/* Themes grid */
+.themes-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:14px}
+.th-card{background:var(--panel);border:2px solid var(--bd);border-radius:12px;overflow:hidden;cursor:pointer;transition:.15s}
+.th-card:hover{transform:translateY(-2px);box-shadow:var(--sh2)}
+.th-card.active{border-color:var(--ac);box-shadow:0 0 0 1px var(--ac)}
+.th-preview{aspect-ratio:16/10;padding:14px;display:flex;flex-direction:column;gap:6px;font-size:10px}
+.th-preview .bar{height:4px;border-radius:2px}
+.th-preview .txt{height:3px;border-radius:2px;opacity:.7}
+.th-preview .txt.s{width:60%}
+.th-name{padding:10px 12px;font-size:12px;font-weight:700;text-align:center;background:var(--panel);border-top:1px solid var(--bd)}
+
+.empty-state{padding:60px 20px;text-align:center;color:var(--mu)}
+.empty-state .ico{font-size:56px;margin-bottom:16px;opacity:.4}
+.empty-state h3{font-size:15px;font-weight:700;margin-bottom:6px;color:var(--tx2)}
+.empty-state p{font-size:12.5px;line-height:1.6}
+
+/* ═══════ EDITOR ═══════ */
+#editor{display:none;flex-direction:column}
+#editor.active{display:flex}
+.editor-header{height:56px;flex-shrink:0;display:flex;align-items:center;gap:10px;padding:0 14px;background:var(--panel);border-bottom:1px solid var(--bd)}
+.doc-title{background:transparent;border:none;font-size:13px;font-weight:700;color:var(--tx);outline:none;padding:6px 10px;border-radius:6px;min-width:100px;max-width:280px}
+.doc-title:hover{background:var(--p2)}
+.doc-title:focus{background:var(--p2);box-shadow:0 0 0 2px var(--acS2)}
+.editor-header .spacer{flex:1}
+.editor-header .btn, .editor-header .icon-btn{padding:6px 11px;font-size:12px}
+.save-status{font-size:10.5px;color:var(--mu);margin-left:auto;margin-right:8px}
+
+.editor-body{flex:1;display:flex;overflow:hidden}
+
+/* Left sidebar */
+.left-panel{width:200px;flex:0 0 200px;background:var(--panel);border-left:1px solid var(--bd);display:flex;flex-direction:column;overflow:hidden}
+.left-panel.hide{display:none}
+.lp-head{padding:10px 14px;border-bottom:1px solid var(--bd);font-size:10.5px;font-weight:700;color:var(--mu);letter-spacing:.3px;display:flex;justify-content:space-between;align-items:center}
+.lp-cnt{font-size:10px;background:var(--p3);padding:1px 6px;border-radius:5px}
+.lp-list{flex:1;overflow-y:auto;padding:8px;display:flex;flex-direction:column;gap:4px}
+.card-item{padding:8px 10px;border-radius:8px;border:1px solid var(--bd);background:var(--p2);cursor:pointer;transition:.1s;display:flex;align-items:center;gap:8px;position:relative}
+.card-item:hover{border-color:var(--bd2)}
+.card-item.active{border-color:var(--ac);background:var(--panel);box-shadow:0 0 0 1px var(--ac) inset}
+.card-item .n{width:22px;height:22px;flex-shrink:0;border-radius:6px;background:var(--p3);display:grid;place-items:center;font-size:10.5px;font-weight:800;color:var(--mu)}
+.card-item.active .n{background:var(--ac);color:var(--bg)}
+.card-item .ti{flex:1;min-width:0;font-size:11.5px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.card-item .acts{display:flex;gap:1px;opacity:0;transition:.1s}
+.card-item:hover .acts{opacity:1}
+.card-item .acts button{width:18px;height:18px;border-radius:4px;font-size:8.5px;color:var(--mu)}
+.card-item .acts button:hover{background:var(--p3);color:var(--tx)}
+.card-item .acts button.del:hover{background:var(--erS);color:var(--er)}
+.lp-foot{padding:8px;border-top:1px solid var(--bd)}
+.lp-foot button{width:100%;justify-content:center}
+
+/* Canvas */
+.canvas-wrap{flex:1;display:flex;flex-direction:column;min-width:0;overflow:hidden;background:var(--bg)}
+.canvas-toolbar{flex-shrink:0;padding:8px 14px;display:flex;gap:6px;align-items:center;border-bottom:1px solid var(--bd);background:var(--panel);overflow-x:auto}
+.canvas-toolbar .sep{width:1px;height:18px;background:var(--bd);margin:0 4px;flex-shrink:0}
+.canvas-toolbar .tbtn{padding:5px 9px;border-radius:6px;font-size:11px;font-weight:600;border:1px solid var(--bd);background:var(--panel);color:var(--tx);white-space:nowrap;display:flex;align-items:center;gap:4px}
+.canvas-toolbar .tbtn:hover{background:var(--p2)}
+.canvas-toolbar .tbtn.active{background:var(--ac);color:var(--bg);border-color:var(--ac)}
+
+.canvas-scroll{flex:1;overflow-y:auto;padding:24px;display:flex;flex-direction:column;align-items:center}
+.canvas-card{width:100%;max-width:900px;background:var(--panel);border:1px solid var(--bd);border-radius:14px;padding:32px 40px;box-shadow:var(--sh2);position:relative;transition:.2s;aspect-ratio:var(--card-aspect, 16/9);display:flex;flex-direction:column;overflow:hidden}
+.canvas-card[data-aspect="4:3"]{aspect-ratio:4/3;max-width:calc(85vh * 4 / 3)}
+.canvas-card[data-aspect="1:1"]{aspect-ratio:1/1;max-width:min(560px, 85vh)}
+.canvas-card[data-aspect="9:16"]{aspect-ratio:9/16;max-width:min(360px, 85vh)}
+.canvas-card[data-aspect="4:5"]{aspect-ratio:4/5;max-width:min(440px, 85vh)}
+.canvas-card[data-aspect="a4"]{aspect-ratio:210/297;max-width:min(500px, 85vh)}
+.canvas-card[data-aspect="free"]{aspect-ratio:auto;min-height:400px}
+.canvas-card[data-aspect="web"]{aspect-ratio:auto;min-height:500px}
+
+/* Card themes */
+.canvas-card[data-theme="light"]{background:#fff;color:#171717}
+.canvas-card[data-theme="dark"]{background:#0a0a0a;color:#fafafa;border-color:#262626}
+.canvas-card[data-theme="mono"]{background:#f5f5f5;color:#000;border:2px solid #000}
+.canvas-card[data-theme="bold"]{background:#000;color:#fff;border-color:#000}
+.canvas-card[data-theme="elegant"]{background:linear-gradient(180deg,#fafafa,#fff);color:#171717;border-top:4px solid #171717}
+.canvas-card[data-theme="minimal"]{background:#fafafa;color:#18181b;border-color:#e5e5e5}
+.canvas-card[data-theme="vibrant"]{background:linear-gradient(135deg,#1a1a1a,#404040);color:#fff;border-color:#333}
+.canvas-card[data-theme="academic"]{background:#fefefe;color:#1a252f;border-top:4px solid #2c3e50}
+.canvas-card[data-theme="warm"]{background:#fef3c7;color:#7c2d12;border-color:#fcd34d}
+
+.card-overlay{position:absolute;top:10px;left:10px;display:flex;gap:3px;opacity:0;transition:.15s;z-index:5}
+.canvas-card:hover .card-overlay{opacity:1}
+.card-overlay button{width:26px;height:26px;border-radius:6px;background:var(--panel);border:1px solid var(--bd);color:var(--tx);font-size:11px;display:grid;place-items:center}
+.card-overlay button:hover{background:var(--p2)}
+
+/* Blocks */
+.block{position:relative;padding:5px 0;transition:.1s;outline:none}
+.block:hover .bh{opacity:1}
+.bh{position:absolute;right:-28px;top:50%;transform:translateY(-50%);display:flex;gap:2px;opacity:0;transition:.15s}
+.bh button{width:20px;height:20px;border-radius:5px;background:var(--p2);border:1px solid var(--bd);color:var(--mu);font-size:9px;display:grid;place-items:center}
+.bh button:hover{background:var(--p3);color:var(--tx)}
+.bh button.del:hover{background:var(--erS);color:var(--er)}
+
+.block-h{font-size:26px;font-weight:900;line-height:1.3;margin-bottom:8px;outline:none;min-height:1em}
+.block-h[data-level="1"]{font-size:30px}
+.block-h[data-level="2"]{font-size:22px}
+.block-h[data-level="3"]{font-size:17px}
+.block-h[data-level="4"]{font-size:14px;opacity:.85}
+.block-h:empty::before,.block-t:empty::before,.block-q:empty::before{content:attr(data-ph);color:var(--mu2);pointer-events:none}
+
+.block-t{font-size:14px;line-height:1.8;outline:none;min-height:1.5em;white-space:pre-wrap;word-wrap:break-word}
+
+.block-img{margin:8px 0;border-radius:8px;overflow:hidden;max-width:100%;position:relative;background:var(--p2)}
+.block-img img{width:100%;max-height:380px;object-fit:contain;display:block}
+.block-img .acts{position:absolute;top:6px;left:6px;display:flex;gap:3px;opacity:0;transition:.15s}
+.block-img:hover .acts{opacity:1}
+.block-img .acts button{padding:3px 7px;border-radius:5px;background:rgba(0,0,0,.8);color:#fff;font-size:9.5px;font-weight:600}
+.block-img.empty{border:2px dashed var(--bd);padding:28px;text-align:center;color:var(--mu);cursor:pointer;font-size:12px}
+.block-img.empty:hover{border-color:var(--ac);color:var(--tx);background:var(--acS)}
+
+.block-quote{border-right:4px solid currentColor;padding:6px 16px;font-size:15px;font-style:italic;line-height:1.7;margin:8px 0;outline:none;opacity:.9}
+.block-callout{padding:12px 16px;border-radius:10px;background:var(--acS);border:1px solid var(--acS2);display:flex;gap:10px;align-items:flex-start;margin:8px 0;font-size:13px;line-height:1.7}
+.block-callout .ic{font-size:18px;flex-shrink:0}
+.block-callout .txt{flex:1;outline:none}
+.block-div{height:1px;background:currentColor;opacity:.15;margin:16px 0}
+.block-tbl{overflow-x:auto;margin:8px 0;border-radius:8px;border:1px solid var(--bd)}
+.block-tbl table{width:100%;border-collapse:collapse;font-size:12.5px}
+.block-tbl th,.block-tbl td{border:1px solid var(--bd);padding:8px 10px;text-align:right;outline:none}
+.block-tbl th{background:var(--p2);font-weight:700}
+.block-chart{padding:12px;border-radius:10px;background:var(--p2);margin:8px 0}
+.block-chart .cc{height:260px;position:relative}
+.block-chart .ctrl{display:flex;gap:5px;margin-bottom:8px;flex-wrap:wrap}
+.block-chart .ctrl button{padding:4px 9px;border-radius:6px;font-size:10.5px;font-weight:600;background:var(--panel);border:1px solid var(--bd);color:var(--tx)}
+.block-chart .ctrl button.active{background:var(--ac);color:var(--bg);border-color:var(--ac)}
+.block-tl{margin:8px 0}
+.block-tl .item{display:flex;gap:10px;padding:6px 0;position:relative}
+.block-tl .item::before{content:'';position:absolute;right:6px;top:20px;bottom:-6px;width:2px;background:var(--bd)}
+.block-tl .item:last-child::before{display:none}
+.block-tl .dot{width:14px;height:14px;flex-shrink:0;border-radius:50%;background:var(--ac);border:3px solid var(--panel);box-shadow:0 0 0 1px var(--ac);margin-top:3px;position:relative;z-index:1}
+.block-tl .c{flex:1}
+.block-tl .d{font-size:10.5px;color:var(--mu);font-weight:700;margin-bottom:2px}
+.block-tl .t{font-size:13px;line-height:1.5}
+.block-code{background:var(--p2);border:1px solid var(--bd);border-radius:8px;padding:12px;font-family:'Courier New',monospace;font-size:12px;direction:ltr;text-align:left;white-space:pre-wrap;outline:none;margin:8px 0}
+.block-cols{display:grid;gap:12px;margin:8px 0}
+.block-cols[data-n="2"]{grid-template-columns:1fr 1fr}
+.block-cols[data-n="3"]{grid-template-columns:1fr 1fr 1fr}
+.block-cols>div{padding:8px;border:1px dashed var(--bd);border-radius:6px;min-height:40px;outline:none;font-size:12.5px;line-height:1.6}
+.block-embed{aspect-ratio:16/9;width:100%;border-radius:8px;overflow:hidden;margin:8px 0;background:#000}
+.block-embed iframe{width:100%;height:100%;border:none}
+.block-gallery{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:8px;margin:8px 0}
+.block-gallery .g-item{aspect-ratio:1;border-radius:6px;overflow:hidden;background:var(--p2);cursor:pointer}
+.block-gallery .g-item img{width:100%;height:100%;object-fit:cover}
+.block-venn{margin:8px 0;display:flex;justify-content:center;padding:10px}
+
+/* Right panel */
+.right-panel{width:260px;flex:0 0 260px;background:var(--panel);border-right:1px solid var(--bd);overflow-y:auto;padding:14px}
+.right-panel.hide{display:none}
+.rp-sec{margin-bottom:18px}
+.rp-title{font-size:10px;font-weight:700;color:var(--mu);margin-bottom:8px;letter-spacing:.3px;text-transform:uppercase;display:flex;align-items:center;gap:5px}
+.rp-title::before{content:'';width:3px;height:10px;background:var(--ac);border-radius:2px}
+.rp-field{margin-bottom:10px}
+.rp-label{font-size:10.5px;color:var(--mu);font-weight:500;margin-bottom:4px;display:block}
+.rp-input,.rp-select,.rp-txt{width:100%;background:var(--p2);border:1px solid var(--bd);border-radius:6px;padding:7px 10px;color:var(--tx);font-size:12px;outline:none;transition:.1s}
+.rp-input:focus,.rp-select:focus,.rp-txt:focus{border-color:var(--ac)}
+.rp-txt{min-height:52px;resize:vertical;font-family:inherit}
+
+.layout-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:5px}
+.layout-chip{padding:7px 3px;border-radius:6px;border:1px solid var(--bd);background:var(--p2);font-size:10px;font-weight:600;color:var(--tx);cursor:pointer;text-align:center;display:flex;flex-direction:column;align-items:center;gap:2px}
+.layout-chip:hover{border-color:var(--bd2)}
+.layout-chip.active{border-color:var(--ac);background:var(--ac);color:var(--bg)}
+.layout-chip .i{font-size:14px}
+
+.theme-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:5px}
+.theme-chip{padding:8px 3px;border-radius:6px;border:1.5px solid var(--bd);background:var(--p2);cursor:pointer;text-align:center;font-size:9.5px;font-weight:600;display:flex;flex-direction:column;align-items:center;gap:3px}
+.theme-chip.active{border-color:var(--ac);box-shadow:0 0 0 1px var(--ac)}
+.theme-chip .sw{width:100%;height:18px;border-radius:4px;border:1px solid rgba(0,0,0,.1)}
+
+/* Present mode */
+#present{position:fixed;inset:0;background:#000;z-index:1000;display:none;flex-direction:column}
+#present.active{display:flex}
+.present-bar{position:absolute;top:0;left:0;right:0;padding:10px 18px;display:flex;justify-content:space-between;align-items:center;color:#fff;background:linear-gradient(180deg,rgba(0,0,0,.6),transparent);z-index:10;opacity:0;transition:.2s}
+#present:hover .present-bar{opacity:1}
+.present-bar button{padding:6px 12px;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.3);color:#fff;border-radius:6px;font-size:12px}
+.present-bar button:hover{background:rgba(255,255,255,.25)}
+.present-stage{flex:1;display:grid;place-items:center;padding:20px;overflow:hidden}
+.present-card{width:100%;max-width:min(1200px, 100%);max-height:calc(100vh - 40px);background:#fff;border-radius:12px;overflow:hidden;box-shadow:0 20px 80px rgba(0,0,0,.5);position:relative;display:flex;flex-direction:column}
+.present-footer{position:absolute;bottom:12px;left:50%;transform:translateX(-50%);display:flex;gap:8px;align-items:center;color:#fff;font-size:12px;background:rgba(0,0,0,.6);padding:6px 14px;border-radius:20px;opacity:0;transition:.2s}
+#present:hover .present-footer{opacity:1}
+.pf-nav{width:28px;height:28px;border-radius:50%;background:rgba(255,255,255,.2);color:#fff;display:grid;place-items:center;font-size:14px}
+.pf-nav:hover{background:rgba(255,255,255,.35)}
+
+/* Modal */
+.ovl{position:fixed;inset:0;background:rgba(0,0,0,.5);backdrop-filter:blur(6px);z-index:500;display:none;align-items:center;justify-content:center;padding:20px;animation:fi .2s}
+.ovl.show{display:flex}
+@keyframes fi{from{opacity:0}to{opacity:1}}
+.mdl{background:var(--panel);border-radius:16px;width:min(960px,100%);max-height:90vh;display:flex;flex-direction:column;overflow:hidden;box-shadow:0 32px 80px rgba(0,0,0,.3);animation:mi .25s}
+@keyframes mi{from{opacity:0;transform:translateY(16px) scale(.97)}to{opacity:1;transform:translateY(0) scale(1)}}
+.mdl-head{padding:16px 20px;border-bottom:1px solid var(--bd);display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+.mdl-head h2{font-size:15px;font-weight:800;display:flex;align-items:center;gap:6px}
+.mdl-head p{font-size:11px;color:var(--mu);margin-top:2px}
+.mdl-body{flex:1;overflow-y:auto;padding:18px 20px;background:var(--bg)}
+.mdl-foot{padding:12px 20px;border-top:1px solid var(--bd);display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+.mdl-foot .note{font-size:11px;color:var(--mu)}
+
+/* Toast */
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--panel);border:1px solid var(--bd);color:var(--tx);padding:10px 18px;border-radius:10px;font-size:12.5px;font-weight:600;box-shadow:var(--sh3);opacity:0;transition:.3s;pointer-events:none;z-index:9999;max-width:90vw}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+.toast.ok{border-color:var(--ok);color:var(--ok)}
+.toast.err{border-color:var(--er);color:var(--er)}
+
+/* Spinner */
+.sp{width:14px;height:14px;border:2px solid var(--acS2);border-top-color:var(--ac);border-radius:50%;animation:spin .7s linear infinite;display:inline-block;vertical-align:middle}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* Slash menu */
+.slash-menu{position:fixed;width:280px;max-height:340px;overflow-y:auto;background:var(--panel);border:1px solid var(--bd);border-radius:12px;box-shadow:var(--sh3);padding:5px;display:none;z-index:1000}
+.slash-menu.show{display:block;animation:mi .15s}
+.slash-item{display:flex;align-items:center;gap:10px;padding:7px 10px;border-radius:7px;cursor:pointer;font-size:12px}
+.slash-item:hover{background:var(--p2)}
+.slash-item .ic{width:26px;height:26px;border-radius:6px;background:var(--p2);display:grid;place-items:center;font-size:13px;flex-shrink:0}
+.slash-item:hover .ic{background:var(--p3)}
+.slash-item .mt{flex:1;min-width:0}
+.slash-item .nm{font-weight:600;font-size:12px}
+.slash-item .ds{font-size:10px;color:var(--mu);margin-top:1px}
+
+/* AI panel */
+.ai-fab{position:fixed;bottom:20px;left:20px;width:52px;height:52px;border-radius:50%;background:var(--ac);color:var(--bg);display:none;align-items:center;justify-content:center;font-size:22px;box-shadow:0 8px 24px var(--acS2);z-index:600;transition:.2s}
+.ai-fab.show{display:flex}
+.ai-fab:hover{transform:scale(1.08)}
+.ai-panel{position:fixed;bottom:20px;left:20px;width:400px;max-width:calc(100vw - 32px);height:min(600px,calc(100vh - 100px));background:var(--panel);border:1px solid var(--bd);border-radius:16px;display:none;flex-direction:column;box-shadow:0 20px 60px rgba(0,0,0,.3);z-index:601;overflow:hidden}
+.ai-panel.show{display:flex}
+.ai-head{padding:12px 16px;background:var(--ac);color:var(--bg);display:flex;justify-content:space-between;align-items:center;font-size:12.5px;font-weight:700}
+.ai-head button{width:24px;height:24px;border-radius:50%;background:rgba(255,255,255,.2);color:inherit;display:grid;place-items:center;font-size:11px}
+.ai-body{flex:1;overflow-y:auto;padding:12px;display:flex;flex-direction:column;gap:8px}
+.ai-msg{padding:9px 13px;border-radius:11px;font-size:12px;line-height:1.7;max-width:88%;word-wrap:break-word;white-space:pre-wrap}
+.ai-msg.user{align-self:flex-start;background:var(--ac);color:var(--bg);border-bottom-right-radius:3px}
+.ai-msg.ai{align-self:flex-end;background:var(--p2);border:1px solid var(--bd);color:var(--tx);border-bottom-left-radius:3px}
+.ai-msg.error{background:var(--erS);border-color:var(--er);color:var(--er)}
+.ai-sugg{display:flex;gap:4px;flex-wrap:wrap;padding:0 12px 8px}
+.ai-sugg button{padding:5px 9px;border-radius:999px;background:var(--p2);border:1px solid var(--bd);color:var(--mu);font-size:10px;font-weight:600}
+.ai-sugg button:hover{background:var(--acS);color:var(--ac);border-color:var(--ac)}
+.ai-input-row{display:flex;gap:6px;padding:10px;border-top:1px solid var(--bd)}
+.ai-input{flex:1;background:var(--p2);border:1px solid var(--bd);border-radius:8px;padding:8px 11px;color:var(--tx);font-size:12px;outline:none;resize:none;max-height:80px;font-family:inherit}
+.ai-input:focus{border-color:var(--ac)}
+.ai-send{width:36px;height:36px;border-radius:50%;background:var(--ac);color:var(--bg);display:grid;place-items:center;font-size:15px}
+.ai-send:hover{opacity:.85}
+
+/* Image search */
+.img-search-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+@media(max-width:800px){.img-search-grid{grid-template-columns:1fr}}
+.img-col{background:var(--panel);border:1px solid var(--bd);border-radius:10px;overflow:hidden;display:flex;flex-direction:column;min-height:250px}
+.col-head{padding:8px 10px;background:var(--p2);border-bottom:1px solid var(--bd);font-size:11px;font-weight:700;display:flex;justify-content:space-between;align-items:center}
+.col-count{font-size:10px;background:var(--p3);color:var(--mu);padding:1px 6px;border-radius:4px}
+.col-body{flex:1;padding:6px;display:grid;grid-template-columns:repeat(auto-fill,minmax(80px,1fr));gap:5px;align-content:start;max-height:300px;overflow-y:auto}
+.img-tile{aspect-ratio:16/11;border-radius:6px;overflow:hidden;cursor:pointer;border:2px solid transparent;background:var(--p2);transition:.1s;position:relative}
+.img-tile:hover{border-color:var(--ac);transform:scale(1.03)}
+.img-tile img{width:100%;height:100%;object-fit:cover}
+.img-tile.loading{display:grid;place-items:center;cursor:default}
+.img-tile.applied{border-color:var(--ok)}
+.img-tile.applied::after{content:'✓';position:absolute;top:4px;right:4px;width:18px;height:18px;background:var(--ok);color:#fff;border-radius:50%;display:grid;place-items:center;font-size:10px;font-weight:800}
+.col-empty{grid-column:1/-1;text-align:center;padding:30px 12px;color:var(--mu);font-size:11px;line-height:1.5}
+
+/* Comments */
+.comment{background:var(--p2);border:1px solid var(--bd);border-radius:9px;padding:10px 12px;margin-bottom:8px}
+.comment-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:4px}
+.comment-name{font-size:11.5px;font-weight:700;color:var(--ac)}
+.comment-date{font-size:10px;color:var(--mu)}
+.comment-body{font-size:12px;line-height:1.6;color:var(--tx)}
+.comment-input-row{display:flex;gap:6px;margin-top:10px}
+
+@media(max-width:900px){
+  #dashSidebar,.left-panel,.right-panel{display:none}
+  .editor-header{padding:0 8px;height:auto;min-height:56px;padding-block:6px;flex-wrap:wrap}
+  .canvas-scroll{padding:12px}
+  .canvas-card{padding:20px}
+  .dash-body{padding:16px}
+  .create-grid{grid-template-columns:1fr 1fr}
+  .proj-grid,.tmpl-grid,.themes-grid{grid-template-columns:repeat(2,1fr)}
+  .ai-panel{width:calc(100vw - 20px);left:10px;bottom:10px}
+  .doc-title{max-width:120px}
+  .save-status{display:none}
+  .present-card{border-radius:6px}
+}
+
+/* Supabase authentication gate */
+#authGate{position:fixed;inset:0;z-index:99999;display:none;align-items:center;justify-content:center;padding:22px;background:radial-gradient(ellipse at 15% 10%,rgba(99,102,241,.16),transparent 42%),var(--bg);overflow:auto}
+#authGate.show{display:flex}
+.auth-card{width:min(100%,440px);background:var(--panel);border:1px solid var(--bd);border-radius:20px;box-shadow:var(--sh3);padding:30px}
+.auth-brand{display:flex;align-items:center;gap:12px;margin-bottom:24px}
+.auth-brand-mark{width:46px;height:46px;border-radius:14px;background:var(--ac);color:var(--bg);display:grid;place-items:center;font-weight:900;font-size:20px}
+.auth-card h1{font-size:22px;font-weight:900;margin-bottom:7px}
+.auth-sub{font-size:12px;color:var(--mu);line-height:1.8;margin-bottom:22px}
+.auth-field{display:block;margin:13px 0}
+.auth-field span{display:block;font-size:12px;font-weight:700;margin-bottom:7px}
+.auth-field input{width:100%;height:44px;border:1px solid var(--bd);border-radius:10px;background:var(--p2);padding:0 13px;outline:none;direction:ltr;text-align:left}
+.auth-field input:focus{border-color:var(--ac);box-shadow:0 0 0 3px var(--acS)}
+.auth-submit{width:100%;height:46px;border-radius:10px;background:var(--ac);color:var(--bg);font:inherit;font-size:13px;font-weight:800;margin-top:12px}
+.auth-submit:disabled{opacity:.5;cursor:not-allowed}
+.auth-switch{display:flex;justify-content:center;gap:7px;align-items:center;margin-top:18px;font-size:12px;color:var(--mu)}
+.auth-link{color:var(--tx);font-weight:800;text-decoration:underline;text-underline-offset:3px}
+.auth-message{display:none;margin-top:14px;padding:11px 12px;border-radius:9px;background:var(--p2);font-size:11.5px;line-height:1.8;overflow-wrap:anywhere}
+.auth-message.show{display:block}
+.auth-message.error{color:var(--er);background:var(--erS)}
+.auth-message.success{color:var(--ok);background:var(--okS)}
+.auth-config{font-size:11px;line-height:1.8;color:var(--mu);padding:10px 12px;background:var(--p2);border:1px dashed var(--bd2);border-radius:9px;margin-top:16px}
+#authSignOut{border:1px solid var(--bd);border-radius:7px;padding:5px 8px;font-size:10px;color:var(--er)}
+@media(max-width:520px){.auth-card{padding:23px 19px}.auth-card h1{font-size:20px}}
+
+</style>
+<script src="https://cdn.jsdelivr.net/npm/pptxgenjs@3.12.0/dist/pptxgen.bundle.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body data-theme="light">
+
+<div id="authGate" class="show" role="dialog" aria-modal="true" aria-labelledby="authTitle">
+  <div class="auth-card">
+    <div class="auth-brand">
+      <div class="auth-brand-mark">A</div>
+      <div><div style="font-size:15px;font-weight:900">AmirAli Studio</div><div style="font-size:10px;color:var(--mu)">استودیوی ساخت محتوای هوشمند</div></div>
+    </div>
+    <h1 id="authTitle">ورود به حساب کاربری</h1>
+    <p class="auth-sub" id="authSubtitle">برای دسترسی به پروژه‌ها و همگام‌سازی ابری وارد حساب خود شوید.</p>
+    <form id="authForm">
+      <label class="auth-field"><span>ایمیل</span><input id="authEmail" type="email" autocomplete="email" placeholder="name@example.com" required></label>
+      <label class="auth-field"><span>رمز عبور</span><input id="authPassword" type="password" autocomplete="current-password" minlength="8" placeholder="حداقل ۸ کاراکتر" required></label>
+      <button class="auth-submit" id="authSubmit" type="submit">ورود</button>
+    </form>
+    <div class="auth-switch"><span id="authSwitchText">حساب کاربری نداری؟</span><button class="auth-link" id="authSwitch" type="button">ثبت‌نام</button></div>
+    <div class="auth-switch" style="margin-top:10px"><button class="auth-link" id="authForgot" type="button">بازیابی رمز عبور</button></div>
+    <div class="auth-message" id="authMessage" role="status"></div>
+    <div class="auth-config" id="authConfig">برای فعال‌شدن ورود، کلید عمومی (anon/publishable) پروژه Supabase را در ابتدای بخش تنظیمات اتصال فایل وارد کنید. هرگز service_role key را در سایت قرار ندهید.</div>
+  </div>
+</div>
+
+
+<!-- ══════════════ DASHBOARD ══════════════ -->
+<div id="dashboard" class="view active">
+  <aside id="dashSidebar">
+    <div class="dash-brand" onclick="goHome()">
+      <div id="brandLogoA"></div>
+      <div class="bw"><span style="font-weight:900">Black</span><span style="font-weight:300">White</span></div>
+    </div>
+    <div class="dash-nav" id="dashNav"></div>
+    <div class="dash-user" onclick="openModal('settings')">
+      <div class="avatar" id="authAvatar">A</div>
+      <div style="flex:1;min-width:0">
+        <div id="authUserName" style="font-weight:700;font-size:12px">حساب کاربری</div>
+        <div id="authUserEmail" style="font-size:10px;color:var(--mu);overflow:hidden;text-overflow:ellipsis;direction:ltr;text-align:right">—</div>
+      </div>
+      <button id="authSignOut" type="button" title="خروج از حساب" onclick="event.stopPropagation();signOutStudio()">خروج</button>
+    </div>
+  </aside>
+  <div id="dashMain">
+    <div class="dash-header">
+      <button class="icon-btn" id="sidebarToggle" title="منو">☰</button>
+      <h1 id="dashTitle">خانه</h1>
+      <div class="dash-search">
+        <input type="text" id="globalSearch" placeholder="جستجو در پروژه‌ها...">
+        <span class="si">🔍</span>
+      </div>
+      <div class="dash-header-actions">
+        <button class="icon-btn" id="notifBtn" title="اعلانات">🔔</button>
+        <button class="icon-btn" id="dashSettingsBtn" title="تنظیمات">⚙️</button>
+      </div>
+    </div>
+    <div class="dash-body" id="dashBody"></div>
+  </div>
+</div>
+
+<!-- ══════════════ EDITOR ══════════════ -->
+<div id="editor" class="view">
+  <div class="editor-header">
+    <button class="icon-btn" onclick="confirmBackToDash()" title="بازگشت">←</button>
+    <input type="text" class="doc-title" id="docTitle" placeholder="بدون عنوان" maxlength="80">
+    <span class="save-status" id="saveStatus"></span>
+    <div class="spacer"></div>
+    <button class="btn btn-g" id="presentBtn" title="ارائه">▶ ارائه</button>
+    <button class="btn btn-g" id="commentBtn" title="کامنت">💬</button>
+    <button class="btn btn-g" id="historyBtn" title="تاریخچه">🕐</button>
+    <button class="btn btn-g" id="shareBtn" title="اشتراک">🔗</button>
+    <button class="btn btn-g" id="agentBtn" title="دستیار">✨</button>
+    <button class="btn btn-g" id="themeEditorBtn" title="تم">🎨</button>
+    <button class="btn btn-p" id="exportBtn" title="خروجی">⤓ خروجی</button>
+  </div>
+  <div class="editor-body">
+    <aside class="left-panel" id="leftPanel">
+      <div class="lp-head"><span>کارت‌ها</span><span class="lp-cnt" id="cardsCount">0</span></div>
+      <div class="lp-list" id="cardsList"></div>
+      <div class="lp-foot"><button class="btn" onclick="addCard()">＋ کارت جدید</button></div>
+    </aside>
+    <div class="canvas-wrap">
+      <div class="canvas-toolbar" id="canvasToolbar"></div>
+      <div class="canvas-scroll" id="canvasScroll">
+        <div id="canvasContainer"></div>
+        <button class="btn" style="width:100%;max-width:900px;padding:18px;border-style:dashed;margin-top:12px" onclick="addCard()">＋ افزودن کارت</button>
+      </div>
+    </div>
+    <aside class="right-panel" id="rightPanel">
+      <div class="rp-sec">
+        <div class="rp-title">چیدمان</div>
+        <div class="layout-grid" id="layoutGrid"></div>
+      </div>
+      <div class="rp-sec">
+        <div class="rp-title">تم کارت</div>
+        <div class="theme-grid" id="themeGrid"></div>
+      </div>
+      <div class="rp-sec">
+        <div class="rp-title">یادداشت</div>
+        <textarea class="rp-txt" id="cardNotes" placeholder="یادداشت گوینده..."></textarea>
+      </div>
+    </aside>
+  </div>
+</div>
+
+<!-- ══════════════ PRESENT ══════════════ -->
+<div id="present">
+  <div class="present-bar">
+    <button onclick="exitPresent()">✕ بستن</button>
+    <span id="presentInfo" style="font-size:12px"></span>
+    <button onclick="toggleFullscreen()">⛶ تمام‌صفحه</button>
+  </div>
+  <div class="present-stage" id="presentStage"></div>
+  <div class="present-footer">
+    <button class="pf-nav" onclick="prevSlide()">←</button>
+    <span id="presentCounter">1/1</span>
+    <button class="pf-nav" onclick="nextSlide()">→</button>
+  </div>
+</div>
+
+<!-- AI fab -->
+<button class="ai-fab" id="aiFab" title="دستیار">✨</button>
+
+<!-- Slash menu -->
+<div class="slash-menu" id="slashMenu"></div>
+
+<!-- Modals container -->
+<div class="ovl" id="modalOvl">
+  <div class="mdl" id="modalContent"></div>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<script>
+// ═══════════════════════════════════════════════════════
+// STATE & UTILS
+// ═══════════════════════════════════════════════════════
+const $ = s => document.querySelector(s);
+const $$ = s => [...document.querySelectorAll(s)];
+const sleep = ms => new Promise(r => setTimeout(r, ms));
+let uidCounter = 0;
+const uid = () => `x${Date.now().toString(36)}_${(++uidCounter).toString(36)}`;
+const RTL_RE = /[\u0590-\u05FF\u0600-\u06FF\u0750-\u077F\u08A0-\u08FF\uFB50-\uFDFF\uFE70-\uFEFF]/;
+const dirOf = t => RTL_RE.test(t || '') ? 'rtl' : 'ltr';
+const esc = s => String(s ?? '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+
+// Content types with dimensions
+const CONTENT_TYPES = {
+  presentation: { icon:'📊', name:'ارائه', aspect:'16:9', dims:'۱۶:۹', desc:'اسلایدهای کارتی حرفه‌ای' },
+  document:     { icon:'📄', name:'سند',   aspect:'a4',   dims:'A4',   desc:'گزارش، پیشنهاد، وایت‌پیپر' },
+  website:      { icon:'🌐', name:'وب‌سایت', aspect:'web', dims:'تک‌صفحه', desc:'صفحه فرود و پورتفولیو' },
+  social:       { icon:'📱', name:'شبکه اجتماعی', aspect:'1:1', dims:'۱:۱', desc:'پست، کاروسل، استوری' },
+  graphic:      { icon:'🎨', name:'گرافیک', aspect:'1:1', dims:'آزاد', desc:'اینفوگرافیک و نمودار' },
+};
+
+// Social sub-formats
+const SOCIAL_FORMATS = {
+  instagram_post: { icon:'📷', name:'پست اینستاگرام', aspect:'1:1' },
+  instagram_carousel: { icon:'🎠', name:'کاروسل اینستاگرام', aspect:'4:5' },
+  instagram_story: { icon:'📸', name:'استوری اینستاگرام', aspect:'9:16' },
+  linkedin_post: { icon:'💼', name:'پست لینکدین', aspect:'4:5' },
+  linkedin_carousel: { icon:'📊', name:'کاروسل لینکدین (PDF)', aspect:'4:5' },
+  twitter_post: { icon:'🐦', name:'پست X/Twitter', aspect:'16:9' },
+  facebook_post: { icon:'📘', name:'پست فیس‌بوک', aspect:'1:1' },
+};
+
+// Slide themes
+const SLIDE_THEMES = {
+  light:    { name:'روشن',     preview:'#ffffff' },
+  dark:     { name:'تیره',     preview:'#0a0a0a' },
+  mono:     { name:'مونو',     preview:'#f5f5f5' },
+  bold:     { name:'پرکنتراست', preview:'#000000' },
+  elegant:  { name:'الگانت',   preview:'#fafafa' },
+  minimal:  { name:'مینیمال',  preview:'#fafafa' },
+  vibrant:  { name:'ویتا',    preview:'#1a1a1a' },
+  academic: { name:'آکادمیک', preview:'#fefefe' },
+  warm:     { name:'گرم',     preview:'#fef3c7' },
+};
+
+// Card layouts
+const LAYOUTS = [
+  { id:'auto',         name:'خودکار',   icon:'🎯' },
+  { id:'title-image',  name:'متن+تصویر', icon:'🖼' },
+  { id:'image-full',   name:'تصویر',   icon:'📷' },
+  { id:'image-bg',     name:'پس‌زمینه', icon:'🌄' },
+  { id:'two-col',      name:'دو ستون', icon:'📰' },
+  { id:'quote',        name:'نقل‌قول',  icon:'❝' },
+  { id:'title-only',   name:'عنوان',   icon:'🅰' },
+  { id:'timeline',     name:'خط‌زمانی', icon:'⏱' },
+  { id:'gallery',      name:'گالری',   icon:'🎞' },
+];
+
+// Block types
+const BLOCK_TYPES = [
+  { type:'heading', icon:'H', name:'عنوان', desc:'تیتر اصلی یا فرعی' },
+  { type:'text',    icon:'T', name:'متن',  desc:'پاراگراف ساده' },
+  { type:'image',   icon:'🖼', name:'تصویر', desc:'فایل یا AI' },
+  { type:'chart',   icon:'📊', name:'نمودار', desc:'واقعی و قابل ویرایش' },
+  { type:'table',   icon:'▦', name:'جدول', desc:'داده جدولی' },
+  { type:'quote',   icon:'❝', name:'نقل قول', desc:'جمله برجسته' },
+  { type:'callout', icon:'💡', name:'کالوت', desc:'نکته یا هشدار' },
+  { type:'timeline',icon:'⏱', name:'خط زمانی', desc:'مراحل با تاریخ' },
+  { type:'divider', icon:'—', name:'جداکننده', desc:'خط افقی' },
+  { type:'code',    icon:'</>', name:'کد', desc:'بلوک کد' },
+  { type:'columns', icon:'◫', name:'ستون‌ها', desc:'۲ یا ۳ ستون' },
+  { type:'embed',   icon:'▶', name:'ویدیو', desc:'YouTube/Vimeo' },
+  { type:'gallery', icon:'🎞', name:'گالری', desc:'چند تصویر' },
+  { type:'venn',    icon:'◯', name:'ون', desc:'نمودار ون' },
+  { type:'button',  icon:'🔗', name:'دکمه', desc:'CTA با لینک' },
+];
+
+// State
+let app = {
+  tab: 'home',
+  theme: 'light',
+  search: '',
+  project: null,
+  currentCardId: null,
+  history: [],
+  historyIndex: -1,
+  presentIdx: 0,
+  logoData: null,
+  activeChart: null,
+  slashTarget: null,
+  editingImageBlock: null,
+  chatHistory: [],
+};
+
+// Storage keys
+const K_PROJECTS = 'bw_projects';
+const K_CURRENT = 'bw_current';
+const K_FOLDERS = 'bw_folders';
+const K_THEME = 'bw_theme';
+
+// ═══════════════════════════════════════════════════════
+// PANDA LOGO
+// ═══════════════════════════════════════════════════════
+const PANDA_SVG = `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%"><circle cx="22" cy="22" r="14" fill="#000"/><circle cx="78" cy="22" r="14" fill="#000"/><ellipse cx="50" cy="55" rx="38" ry="36" fill="#fff" stroke="#000" stroke-width="2.5"/><ellipse cx="35" cy="48" rx="9" ry="12" fill="#000"/><ellipse cx="65" cy="48" rx="9" ry="12" fill="#000"/><circle cx="37" cy="45" r="3" fill="#fff"/><circle cx="67" cy="45" r="3" fill="#fff"/><ellipse cx="50" cy="65" rx="6" ry="4.5" fill="#000"/><path d="M 44 73 Q 50 79 56 73" stroke="#000" stroke-width="2.5" fill="none" stroke-linecap="round"/></svg>`;
+
+async function loadLogo(){
+  try{
+    const res = await fetch('fonts/Logo.png', {cache:'no-store'});
+    if (!res.ok) throw 0;
+    const blob = await res.blob();
+    app.logoData = await new Promise((ok, ko) => {
+      const r = new FileReader(); r.onload = () => ok(r.result); r.onerror = ko; r.readAsDataURL(blob);
+    });
+  }catch(e){ app.logoData = null; }
+  renderBrand();
+}
+function renderBrand(){
+  const html = app.logoData ? `<img class="panda" src="${app.logoData}" alt="BlackWhite">` : `<div style="width:28px;height:28px">${PANDA_SVG}</div>`;
+  const el = document.getElementById('brandLogoA');
+  if (el) el.innerHTML = html;
+}
+
+// ═══════════════════════════════════════════════════════
+// TOAST
+// ═══════════════════════════════════════════════════════
+let toastT = null;
+function toast(msg, type){
+  const el = $('#toast');
+  el.textContent = msg;
+  el.className = 'toast show' + (type ? ' '+type : '');
+  clearTimeout(toastT);
+  toastT = setTimeout(() => el.classList.remove('show'), 3000);
+}
+
+// ═══════════════════════════════════════════════════════
+// THEME
+// ═══════════════════════════════════════════════════════
+function setAppTheme(t){
+  document.body.setAttribute('data-theme', t);
+  app.theme = t;
+  try{ localStorage.setItem(K_THEME, t); }catch(e){}
+}
+function loadAppTheme(){
+  try{ setAppTheme(localStorage.getItem(K_THEME) || 'light'); }catch(e){ setAppTheme('light'); }
+}
+
+// ═══════════════════════════════════════════════════════
+// STORAGE
+// ═══════════════════════════════════════════════════════
+function saveProject(){
+  if (!app.project) return;
+  app.project.updatedAt = Date.now();
+  try{
+    const projects = JSON.parse(localStorage.getItem(K_PROJECTS) || '{}');
+    projects[app.project.id] = app.project;
+    localStorage.setItem(K_PROJECTS, JSON.stringify(projects));
+    localStorage.setItem(K_CURRENT, app.project.id);
+    $('#saveStatus').textContent = '✓ ذخیره شد';
+    setTimeout(() => { const el = $('#saveStatus'); if (el) el.textContent = ''; }, 2000);
+  }catch(e){ toast('⚠️ ذخیره ناموفق — حافظه پر است', 'err'); }
+}
+function getAllProjects(){
+  try{
+    const p = JSON.parse(localStorage.getItem(K_PROJECTS) || '{}');
+    return Object.values(p).sort((a,b) => (b.updatedAt || 0) - (a.updatedAt || 0));
+  }catch(e){ return []; }
+}
+function getProject(id){
+  const all = getAllProjects();
+  return all.find(p => p.id === id);
+}
+function deleteProject(id){
+  try{
+    const p = JSON.parse(localStorage.getItem(K_PROJECTS) || '{}');
+    delete p[id];
+    localStorage.setItem(K_PROJECTS, JSON.stringify(p));
+  }catch(e){}
+}
+function getFolders(){
+  try{ return JSON.parse(localStorage.getItem(K_FOLDERS) || '[]'); }catch(e){ return []; }
+}
+function saveFolders(fs){
+  try{ localStorage.setItem(K_FOLDERS, JSON.stringify(fs)); }catch(e){}
+}
+
+// ═══════════════════════════════════════════════════════
+// DASHBOARD
+// ═══════════════════════════════════════════════════════
+const NAV_ITEMS = [
+  { id:'home', icon:'🏠', name:'خانه' },
+  { id:'projects', icon:'📁', name:'همه پروژه‌ها', count:true },
+  { id:'shared', icon:'👥', name:'به اشتراک‌گذاشته' },
+  { id:'sites', icon:'🌐', name:'وب‌سایت‌ها' },
+  { id:'images', icon:'🎨', name:'تصاویر AI' },
+  { id:'sep1' },
+  { id:'folders', icon:'📂', name:'پوشه‌ها' },
+  { id:'sep2' },
+  { id:'templates', icon:'📋', name:'قالب‌ها' },
+  { id:'inspiration', icon:'✨', name:'الهام‌بخش' },
+  { id:'themes', icon:'🎨', name:'تم‌ها' },
+  { id:'sep3' },
+  { id:'trash', icon:'🗑', name:'سطل زباله' },
+  { id:'settings', icon:'⚙️', name:'تنظیمات' },
+];
+
+function renderDashNav(){
+  const nav = $('#dashNav');
+  nav.innerHTML = '';
+  const projCount = getAllProjects().length;
+  NAV_ITEMS.forEach(item => {
+    if (item.id.startsWith('sep')){
+      const sep = document.createElement('div');
+      sep.className = 'nav-sep';
+      nav.appendChild(sep);
+      return;
+    }
+    const el = document.createElement('div');
+    el.className = 'nav-item' + (app.tab === item.id ? ' active' : '');
+    el.innerHTML = `<span class="ic">${item.icon}</span><span>${item.name}</span>${item.count && projCount ? `<span class="cnt">${projCount}</span>` : ''}`;
+    el.onclick = () => { app.tab = item.id; renderDashboard(); };
+    nav.appendChild(el);
+  });
+}
+
+function renderDashboard(){
+  renderDashNav();
+  const titles = { home:'خانه', projects:'پروژه‌ها', shared:'به اشتراک‌گذاشته', sites:'وب‌سایت‌ها', images:'تصاویر AI', folders:'پوشه‌ها', templates:'قالب‌ها', inspiration:'الهام‌بخش', themes:'تم‌ها', trash:'سطل زباله', settings:'تنظیمات' };
+  $('#dashTitle').textContent = titles[app.tab] || 'خانه';
+  $('#dashBody').innerHTML = '';
+  
+  if (app.tab === 'home') renderHome();
+  else if (app.tab === 'projects') renderAllProjects();
+  else if (app.tab === 'shared') renderShared();
+  else if (app.tab === 'sites') renderSites();
+  else if (app.tab === 'images') renderAIImages();
+  else if (app.tab === 'folders') renderFolders();
+  else if (app.tab === 'templates') renderTemplates();
+  else if (app.tab === 'inspiration') renderInspiration();
+  else if (app.tab === 'themes') renderThemes();
+  else if (app.tab === 'trash') renderTrash();
+  else if (app.tab === 'settings') renderSettings();
+}
+
+function renderHome(){
+  const body = $('#dashBody');
+  body.innerHTML = `
+    <div class="create-grid" id="createGrid"></div>
+    <div class="dash-section">
+      <div class="dash-section-head">
+        <h2>📁 پروژه‌های اخیر</h2>
+        <span class="link" onclick="app.tab='projects';renderDashboard()">مشاهده همه ←</span>
+      </div>
+      <div class="proj-grid" id="recentProjects"></div>
+    </div>
+    <div class="dash-section">
+      <div class="dash-section-head">
+        <h2>📋 قالب‌های محبوب</h2>
+        <span class="link" onclick="app.tab='templates';renderDashboard()">مشاهده همه ←</span>
+      </div>
+      <div class="tmpl-grid" id="popularTemplates"></div>
+    </div>
+  `;
+  
+  // Create cards
+  const cg = $('#createGrid');
+  const creates = [
+    { id:'ai', icon:'✨', title:'ایجاد با AI', desc:'موضوع بده، خودکار بساز', cls:'ai' },
+    { id:'text', icon:'📝', title:'چسباندن متن', desc:'از متن یا فایل شروع کن' },
+    { id:'tmpl', icon:'📋', title:'از قالب', desc:'سریع‌تر از صفر' },
+    { id:'import', icon:'📁', title:'وارد کردن', desc:'JSON، MD یا TXT' },
+  ];
+  creates.forEach(c => {
+    const el = document.createElement('div');
+    el.className = 'create-card ' + (c.cls || '');
+    el.innerHTML = `<div class="ic">${c.icon}</div><h3>${c.title}</h3><p>${c.desc}</p>`;
+    el.onclick = () => {
+      if (c.id === 'ai') createWithAI();
+      else if (c.id === 'text') createWithText();
+      else if (c.id === 'tmpl'){ app.tab = 'templates'; renderDashboard(); }
+      else if (c.id === 'import') importProject();
+    };
+    cg.appendChild(el);
+  });
+  
+  // Recent projects
+  const rp = $('#recentProjects');
+  const recent = getAllProjects().slice(0, 6);
+  if (!recent.length){
+    rp.innerHTML = `<div class="empty-state" style="grid-column:1/-1"><div class="ico">🐼</div><h3>هنوز پروژه‌ای نساخته‌اید</h3><p>از یکی از دکمه‌های بالا شروع کنید</p></div>`;
+  } else {
+    recent.forEach(p => rp.appendChild(projectCard(p)));
+  }
+  
+  // Popular templates
+  const pt = $('#popularTemplates');
+  TEMPLATES.slice(0, 4).forEach(t => pt.appendChild(templateCard(t)));
+}
+
+function projectCard(p){
+  const ct = CONTENT_TYPES[p.type] || CONTENT_TYPES.presentation;
+  const el = document.createElement('div');
+  el.className = 'proj-card';
+  el.innerHTML = `
+    <div class="proj-thumb">
+      <span style="font-size:40px">${ct.icon}</span>
+      <span class="type-badge">${ct.name}</span>
+      <div class="proj-acts">
+        <button title="اشتراک" onclick="event.stopPropagation();shareProject('${p.id}')">🔗</button>
+        <button title="حذف" onclick="event.stopPropagation();deleteProjectConfirm('${p.id}')">🗑</button>
+      </div>
+    </div>
+    <div class="proj-info">
+      <div class="proj-title">${esc(p.title || 'بدون عنوان')}</div>
+      <div class="proj-meta">${new Date(p.updatedAt || Date.now()).toLocaleDateString('fa-IR')} · ${p.cards?.length || 0} کارت</div>
+    </div>
+  `;
+  el.onclick = () => openProject(p.id);
+  return el;
+}
+
+function templateCard(t){
+  const el = document.createElement('div');
+  el.className = 'tmpl-card';
+  el.innerHTML = `
+    <div class="tmpl-thumb" style="background:${t.color || 'linear-gradient(135deg,#333,#000)'};color:#fff;font-size:13px">${t.icon || '📄'}</div>
+    <div class="tmpl-info">
+      <div class="tmpl-name">${t.name}</div>
+      <div class="tmpl-cat">${t.category || 'ارائه'}</div>
+    </div>
+  `;
+  el.onclick = () => createFromTemplate(t);
+  return el;
+}
+
+function renderAllProjects(){
+  const body = $('#dashBody');
+  const projects = getAllProjects().filter(p => !app.search || (p.title || '').toLowerCase().includes(app.search.toLowerCase()));
+  if (!projects.length){
+    body.innerHTML = `<div class="empty-state"><div class="ico">📁</div><h3>${app.search ? 'نتیجه‌ای یافت نشد' : 'هنوز پروژه‌ای نساخته‌اید'}</h3><p>${app.search ? 'عبارت دیگری امتحان کنید' : 'یک پروژه جدید بسازید'}</p></div>`;
+    return;
+  }
+  const grid = document.createElement('div');
+  grid.className = 'proj-grid';
+  projects.forEach(p => grid.appendChild(projectCard(p)));
+  body.appendChild(grid);
+}
+
+function renderShared(){
+  $('#dashBody').innerHTML = `<div class="empty-state"><div class="ico">👥</div><h3>هیچ پروژه‌ای به اشتراک گذاشته نشده</h3><p>وقتی کسی پروژه‌ای با شما به اشتراک بگذارد، اینجا ظاهر می‌شود</p></div>`;
+}
+function renderSites(){
+  const sites = getAllProjects().filter(p => p.type === 'website');
+  if (!sites.length){ $('#dashBody').innerHTML = `<div class="empty-state"><div class="ico">🌐</div><h3>هنوز وب‌سایتی نساخته‌اید</h3><p>از نوع «وب‌سایت» شروع کنید</p></div>`; return; }
+  const grid = document.createElement('div');
+  grid.className = 'proj-grid';
+  sites.forEach(p => grid.appendChild(projectCard(p)));
+  $('#dashBody').appendChild(grid);
+}
+function renderAIImages(){
+  const imgs = [];
+  getAllProjects().forEach(p => p.cards?.forEach(c => c.blocks?.forEach(b => {
+    if (b.type === 'image' && b.src) imgs.push({ src:b.src, project:p.title });
+  })));
+  if (!imgs.length){ $('#dashBody').innerHTML = `<div class="empty-state"><div class="ico">🎨</div><h3>هنوز تصویری نساخته‌اید</h3><p>در ادیتور از دکمه «تولید با AI» استفاده کنید</p></div>`; return; }
+  const grid = document.createElement('div');
+  grid.className = 'tmpl-grid';
+  imgs.forEach(img => {
+    const el = document.createElement('div');
+    el.className = 'tmpl-card';
+    el.innerHTML = `<div style="aspect-ratio:16/9;background:var(--p2);overflow:hidden"><img src="${img.src}" style="width:100%;height:100%;object-fit:cover"></div><div class="tmpl-info"><div class="tmpl-name">${esc(img.project)}</div></div>`;
+    el.onclick = () => { const a = document.createElement('a'); a.href = img.src; a.download = 'blackwhite-image.png'; a.click(); };
+    grid.appendChild(el);
+  });
+  $('#dashBody').appendChild(grid);
+}
+function renderFolders(){
+  const folders = getFolders();
+  $('#dashBody').innerHTML = `
+    <div style="display:flex;gap:8px;margin-bottom:16px">
+      <button class="btn btn-p" onclick="createFolder()">＋ پوشه جدید</button>
+    </div>
+    <div class="proj-grid" id="foldersGrid"></div>
+  `;
+  const grid = $('#foldersGrid');
+  if (!folders.length){
+    grid.innerHTML = `<div class="empty-state" style="grid-column:1/-1"><div class="ico">📂</div><h3>هیچ پوشه‌ای ندارید</h3><p>پوشه بسازید تا پروژه‌ها را سازماندهی کنید</p></div>`;
+    return;
+  }
+  folders.forEach((f, i) => {
+    const el = document.createElement('div');
+    el.className = 'proj-card';
+    el.innerHTML = `<div class="proj-thumb" style="font-size:32px">📁<div class="proj-acts"><button onclick="event.stopPropagation();deleteFolder(${i})">🗑</button></div></div><div class="proj-info"><div class="proj-title">${esc(f.name)}</div><div class="proj-meta">${f.count || 0} پروژه</div></div>`;
+    grid.appendChild(el);
+  });
+}
+
+function renderTemplates(){
+  $('#dashBody').innerHTML = `<div class="tmpl-grid" id="tmplGrid"></div>`;
+  const grid = $('#tmplGrid');
+  TEMPLATES.forEach(t => grid.appendChild(templateCard(t)));
+}
+
+function renderInspiration(){
+  $('#dashBody').innerHTML = `<div class="empty-state"><div class="ico">✨</div><h3>الهام‌بخش</h3><p>پروژه‌های نمونه از کاربران BlackWhite — به‌زودی</p></div>`;
+}
+
+function renderThemes(){
+  $('#dashBody').innerHTML = `
+    <div style="margin-bottom:16px;color:var(--mu);font-size:13px">یک تم انتخاب کنید تا در پروژه جدید اعمال شود:</div>
+    <div class="themes-grid" id="themesGrid"></div>
+  `;
+  const grid = $('#themesGrid');
+  Object.entries(SLIDE_THEMES).forEach(([k, v]) => {
+    const el = document.createElement('div');
+    el.className = 'th-card';
+    const isDark = ['dark','bold','vibrant'].includes(k);
+    const textColor = isDark ? '#fafafa' : '#171717';
+    el.innerHTML = `
+      <div class="th-preview" style="background:${v.preview};color:${textColor}">
+        <div class="bar" style="background:${textColor}"></div>
+        <div class="txt" style="background:${textColor}"></div>
+        <div class="txt" style="background:${textColor}"></div>
+        <div class="txt s" style="background:${textColor}"></div>
+      </div>
+      <div class="th-name">${v.name}</div>
+    `;
+    el.onclick = () => { toast(`✅ تم «${v.name}» انتخاب شد`, 'ok'); };
+    grid.appendChild(el);
+  });
+}
+
+function renderTrash(){
+  $('#dashBody').innerHTML = `<div class="empty-state"><div class="ico">🗑</div><h3>سطل زباله خالی است</h3><p>پروژه‌های حذف‌شده به‌زودی اینجا ظاهر می‌شوند</p></div>`;
+}
+
+function renderSettings(){
+  $('#dashBody').innerHTML = `
+    <div style="max-width:600px">
+      <div class="dash-section">
+        <h2 style="font-size:15px;margin-bottom:14px">ظاهر اپلیکیشن</h2>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+          <button class="btn ${app.theme==='light'?'btn-p':''}" onclick="setAppTheme('light');renderSettings()">☀️ روشن</button>
+          <button class="btn ${app.theme==='dark'?'btn-p':''}" onclick="setAppTheme('dark');renderSettings()">🌙 تیره</button>
+        </div>
+      </div>
+      <div class="dash-section">
+        <h2 style="font-size:15px;margin-bottom:14px">وضعیت ذخیره‌سازی</h2>
+        <div style="padding:14px;background:var(--p2);border-radius:10px;font-size:12.5px;line-height:1.7">
+          <div>📊 <b>${getAllProjects().length}</b> پروژه ذخیره شده</div>
+          <div style="margin-top:6px">💾 فضای تقریبی: <b>${(JSON.stringify(localStorage.getItem(K_PROJECTS) || '{}').length / 1024).toFixed(1)} KB</b></div>
+        </div>
+      </div>
+      <div class="dash-section">
+        <h2 style="font-size:15px;margin-bottom:14px">درباره</h2>
+        <div style="padding:14px;background:var(--p2);border-radius:10px;font-size:12px;line-height:1.8;color:var(--mu)">
+          <div><b>BlackWhite</b> — استودیوی محتوای هوشمند</div>
+          <div>نسخه ۱.۰ · ساخته‌شده با ❤️</div>
+          <div style="margin-top:8px;color:var(--mu2);font-size:11px">از این اپ می‌توانید برای ساخت ارائه، سند، وب‌سایت، پست شبکه اجتماعی و گرافیک استفاده کنید</div>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+// Folders
+function createFolder(){
+  const name = prompt('نام پوشه:');
+  if (!name) return;
+  const folders = getFolders();
+  folders.push({ name, id: uid(), count: 0, createdAt: Date.now() });
+  saveFolders(folders);
+  renderFolders();
+}
+function deleteFolder(i){
+  if (!confirm('پوشه حذف شود؟')) return;
+  const folders = getFolders();
+  folders.splice(i, 1);
+  saveFolders(folders);
+  renderFolders();
+}
+
+// Templates
+const TEMPLATES = [
+  { id:'business_pitch', icon:'💼', name:'پیچ سرمایه‌گذاری', category:'کسب‌وکار', color:'linear-gradient(135deg,#171717,#404040)', cards:5 },
+  { id:'minimal_presentation', icon:'⚪', name:'ارائه مینیمال', category:'ارائه', color:'linear-gradient(135deg,#f5f5f5,#d4d4d4)', cards:6 },
+  { id:'project_report', icon:'📊', name:'گزارش پروژه', category:'سند', color:'linear-gradient(135deg,#000,#333)', cards:8 },
+  { id:'social_carousel', icon:'📱', name:'کاروسل اینستاگرام', category:'شبکه اجتماعی', color:'linear-gradient(135deg,#1a1a1a,#666)', cards:7 },
+  { id:'portfolio_website', icon:'🌐', name:'وب‌سایت پورتفولیو', category:'وب‌سایت', color:'linear-gradient(135deg,#404040,#000)', cards:4 },
+  { id:'resume', icon:'📝', name:'رزومه حرفه‌ای', category:'سند', color:'linear-gradient(135deg,#262626,#808080)', cards:3 },
+  { id:'product_launch', icon:'🚀', name:'معرفی محصول', category:'ارائه', color:'linear-gradient(135deg,#000,#555)', cards:6 },
+  { id:'team_intro', icon:'👥', name:'معرفی تیم', category:'ارائه', color:'linear-gradient(135deg,#333,#999)', cards:5 },
+  { id:'event_poster', icon:'🎨', name:'پوستر رویداد', category:'گرافیک', color:'linear-gradient(135deg,#1a1a1a,#4a4a4a)', cards:1 },
+  { id:'annual_report', icon:'📈', name:'گزارش سالانه', category:'سند', color:'linear-gradient(135deg,#262626,#666)', cards:10 },
+];
+
+// ═══════════════════════════════════════════════════════
+// PROJECT CREATION
+// ═══════════════════════════════════════════════════════
+function newProject(type = 'presentation', title = 'بدون عنوان'){
+  const ct = CONTENT_TYPES[type];
+  return {
+    id: uid(),
+    title,
+    type,
+    aspect: ct.aspect,
+    theme: 'light',
+    cards: [createBlankCard()],
+    comments: [],
+    versions: [],
+    createdAt: Date.now(),
+    updatedAt: Date.now(),
+  };
+}
+
+function createWithAI(){
+  openModal('aiSetup');
+}
+
+function createWithText(){
+  openModal('textSetup');
+}
+
+function createFromTemplate(t){
+  const ct = t.category === 'شبکه اجتماعی' ? 'social' : t.category === 'وب‌سایت' ? 'website' : t.category === 'سند' ? 'document' : t.category === 'گرافیک' ? 'graphic' : 'presentation';
+  const p = newProject(ct, t.name);
+  p.cards = [createBlankCard()];
+  // Add title card
+  p.cards[0].blocks = [
+    { id:uid(), type:'heading', level:1, text: t.name },
+    { id:uid(), type:'text', content: `این پروژه از قالب «${t.name}» ساخته شده است.` },
+  ];
+  // Add blank cards
+  for (let i = 1; i < t.cards; i++) p.cards.push(createBlankCard());
+  app.project = p;
+  saveProject();
+  openEditor();
+  toast(`✅ قالب «${t.name}» اعمال شد`, 'ok');
+}
+
+function importProject(){
+  const input = document.createElement('input');
+  input.type = 'file';
+  input.accept = '.json,.md,.txt';
+  input.onchange = async e => {
+    const f = e.target.files[0];
+    if (!f) return;
+    const text = await f.text();
+    if (f.name.endsWith('.json')){
+      try{
+        const data = JSON.parse(text);
+        if (data.cards && data.id){
+          app.project = data;
+          saveProject();
+          openEditor();
+          toast('✅ پروژه بارگذاری شد', 'ok');
+        } else throw new Error();
+      }catch(err){ toast('❌ فایل JSON معتبر نیست', 'err'); }
+    } else {
+      // treat as text — split into cards
+      const p = newProject('presentation', f.name.replace(/\.(md|txt)$/, ''));
+      const chunks = splitTextLocal(text, 5);
+      p.cards = chunks.map(ch => {
+        const card = createBlankCard();
+        const { title, body } = extractTitleLocal(ch);
+        card.blocks = [];
+        if (title) card.blocks.push({ id:uid(), type:'heading', level:1, text:title });
+        if (body) card.blocks.push({ id:uid(), type:'text', content:body });
+        if (!card.blocks.length) card.blocks.push({ id:uid(), type:'text', content:ch });
+        return card;
+      });
+      app.project = p;
+      saveProject();
+      openEditor();
+      toast('✅ فایل متنی بارگذاری شد', 'ok');
+    }
+  };
+  input.click();
+}
+
+// ═══════════════════════════════════════════════════════
+// CARD & BLOCK CREATION
+// ═══════════════════════════════════════════════════════
+function createBlankCard(){
+  return {
+    id: uid(),
+    blocks: [
+      { id: uid(), type:'heading', level:1, text:'' },
+      { id: uid(), type:'text', content:'' },
+    ],
+    layout:'auto',
+    notes:'',
+  };
+}
+function createBlock(type, opts = {}){
+  const base = { id: uid(), type };
+  switch(type){
+    case 'heading': return { ...base, level: opts.level || 1, text: opts.text || '' };
+    case 'text': return { ...base, content: opts.content || '' };
+    case 'image': return { ...base, src: null, alt: '' };
+    case 'quote': return { ...base, text: '' };
+    case 'callout': return { ...base, icon:'💡', text:'' };
+    case 'divider': return base;
+    case 'chart': return { ...base, chartType:'bar', data:{ labels:['الف','ب','ج','د'], datasets:[{ label:'داده', data:[12,19,8,15] }] } };
+    case 'table': return { ...base, rows:[['عنوان ۱','عنوان ۲'],['داده','داده']] };
+    case 'timeline': return { ...base, items:[{date:'۱۴۰۳', text:'شروع'},{date:'۱۴۰۴', text:'ادامه'}] };
+    case 'code': return { ...base, lang:'js', code:'// کد شما\n' };
+    case 'columns': return { ...base, n:2, cols:['ستون ۱','ستون ۲'] };
+    case 'embed': return { ...base, url:'' };
+    case 'gallery': return { ...base, images:[] };
+    case 'venn': return { ...base, a:'مجموعه A', b:'مجموعه B' };
+    case 'button': return { ...base, text:'کلیک کنید', url:'' };
+    default: return base;
+  }
+}
+
+// ═══════════════════════════════════════════════════════
+// PROJECT OPEN & EDITOR
+// ═══════════════════════════════════════════════════════
+function openProject(id){
+  const p = getProject(id);
+  if (!p) return;
+  app.project = p;
+  app.currentCardId = p.cards?.[0]?.id || null;
+  pushHistory();
+  openEditor();
+}
+
+function openEditor(){
+  if (!app.project) return;
+  app.project.cards = app.project.cards || [createBlankCard()];
+  if (!app.currentCardId || !app.project.cards.find(c => c.id === app.currentCardId)){
+    app.currentCardId = app.project.cards[0].id;
+  }
+  $('#dashboard').classList.remove('active');
+  $('#editor').classList.add('active');
+  $('#docTitle').value = app.project.title;
+  $('#aiFab').classList.add('show');
+  renderEditor();
+  if (app.project.type === 'social'){
+    // social format chips
+    renderCanvasToolbar();
+  }
+}
+
+function confirmBackToDash(){
+  if (!app.project) return goHome();
+  saveProject();
+  goHome();
+}
+
+function goHome(){
+  $('#dashboard').classList.add('active');
+  $('#editor').classList.remove('active');
+  $('#aiFab').classList.remove('show');
+  app.project = null;
+  renderDashboard();
+}
+
+function renderEditor(){
+  renderCardsList();
+  renderCanvas();
+  renderRightPanel();
+  renderCanvasToolbar();
+  $('#cardsCount').textContent = app.project.cards.length;
+}
+
+function renderCardsList(){
+  const list = $('#cardsList');
+  list.innerHTML = '';
+  app.project.cards.forEach((card, i) => {
+    const firstH = card.blocks.find(b => b.type === 'heading');
+    const firstT = card.blocks.find(b => b.type === 'text');
+    const label = firstH?.text || firstT?.content || 'خالی';
+    const el = document.createElement('div');
+    el.className = 'card-item' + (card.id === app.currentCardId ? ' active' : '');
+    el.innerHTML = `
+      <div class="n">${i+1}</div>
+      <div class="ti">${esc(label.slice(0,30)) || 'خالی'}</div>
+      <div class="acts">
+        <button onclick="event.stopPropagation();moveCard(${i},-1)" title="بالا">▲</button>
+        <button onclick="event.stopPropagation();moveCard(${i},1)" title="پایین">▼</button>
+        <button class="del" onclick="event.stopPropagation();removeCard('${card.id}')" title="حذف">✕</button>
+      </div>
+    `;
+    el.onclick = () => { app.currentCardId = card.id; renderEditor(); };
+    list.appendChild(el);
+  });
+}
+
+function renderCanvasToolbar(){
+  const tb = $('#canvasToolbar');
+  if (!tb) return;
+  tb.innerHTML = '';
+  
+  const addBtn = document.createElement('button');
+  addBtn.className = 'tbtn';
+  addBtn.innerHTML = '＋ بلوک';
+  addBtn.onclick = () => openSlashMenu(null, app.project.cards.find(c => c.id === app.currentCardId)?.blocks.length || 0);
+  tb.appendChild(addBtn);
+  
+  tb.appendChild(sep());
+  
+  // Chart / Table quick add
+  ['chart','table','image','timeline'].forEach(t => {
+    const bt = BLOCK_TYPES.find(x => x.type === t);
+    const b = document.createElement('button');
+    b.className = 'tbtn';
+    b.innerHTML = `${bt.icon} ${bt.name}`;
+    b.onclick = () => addBlockToCurrent(t);
+    tb.appendChild(b);
+  });
+  
+  tb.appendChild(sep());
+  
+  // Undo/Redo
+  const undoBtn = document.createElement('button');
+  undoBtn.className = 'tbtn';
+  undoBtn.innerHTML = '↶';
+  undoBtn.title = 'واگرد (Ctrl+Z)';
+  undoBtn.onclick = undo;
+  tb.appendChild(undoBtn);
+  
+  const redoBtn = document.createElement('button');
+  redoBtn.className = 'tbtn';
+  redoBtn.innerHTML = '↷';
+  redoBtn.title = 'ازنو (Ctrl+Y)';
+  redoBtn.onclick = redo;
+  tb.appendChild(redoBtn);
+}
+
+function sep(){
+  const s = document.createElement('div');
+  s.className = 'sep';
+  return s;
+}
+
+function renderCanvas(){
+  const container = $('#canvasContainer');
+  if (!container) return;
+  container.innerHTML = '';
+  const card = app.project.cards.find(c => c.id === app.currentCardId);
+  if (!card) return;
+  
+  const canvas = document.createElement('div');
+  canvas.className = 'canvas-card';
+  canvas.dataset.aspect = app.project.aspect;
+  canvas.dataset.theme = app.project.theme;
+  
+  const overlay = document.createElement('div');
+  overlay.className = 'card-overlay';
+  overlay.innerHTML = `
+    <button title="کپی" onclick="duplicateCard('${card.id}')">⎘</button>
+    <button title="حذف" onclick="removeCard('${card.id}')">✕</button>
+  `;
+  canvas.appendChild(overlay);
+  
+  card.blocks.forEach((block, i) => {
+    canvas.appendChild(renderBlock(block, card, i));
+  });
+  
+  // Add block placeholder
+  const addBlock = document.createElement('div');
+  addBlock.style.cssText = 'padding:12px;text-align:center;color:var(--mu2);font-size:11px;cursor:pointer;border:1px dashed var(--bd);border-radius:6px;margin-top:8px';
+  addBlock.textContent = '＋ افزودن بلوک (یا تایپ / در انتها)';
+  addBlock.onclick = () => openSlashMenu(null, card.blocks.length);
+  canvas.appendChild(addBlock);
+  
+  container.appendChild(canvas);
+  
+  // Render charts after DOM
+  setTimeout(() => renderAllCharts(), 30);
+}
+
+function renderBlock(block, card, index){
+  const wrap = document.createElement('div');
+  wrap.className = 'block';
+  wrap.dataset.blockId = block.id;
+  
+  // Handle
+  const h = document.createElement('div');
+  h.className = 'bh';
+  h.innerHTML = `
+    <button onclick="event.stopPropagation();moveBlock('${card.id}','${block.id}',-1)" title="بالا">▲</button>
+    <button onclick="event.stopPropagation();moveBlock('${card.id}','${block.id}',1)" title="پایین">▼</button>
+    <button class="del" onclick="event.stopPropagation();removeBlock('${card.id}','${block.id}')" title="حذف">✕</button>
+  `;
+  wrap.appendChild(h);
+  
+  const inner = document.createElement('div');
+  
+  switch(block.type){
+    case 'heading':
+      inner.className = 'block-h';
+      inner.dataset.level = block.level;
+      inner.contentEditable = 'true';
+      inner.setAttribute('dir', dirOf(block.text));
+      inner.dataset.ph = 'عنوان...';
+      inner.textContent = block.text;
+      inner.oninput = () => { block.text = inner.textContent; saveProject(); updateCardListText(); };
+      inner.onkeydown = e => {
+        if (e.key === 'Enter'){ e.preventDefault(); focusOrCreateNext(card, index); }
+        else if (e.key === '/' && !inner.textContent){ e.preventDefault(); openSlashMenu(block.id, index + 1); }
+      };
+      break;
+    case 'text':
+      inner.className = 'block-t';
+      inner.contentEditable = 'true';
+      inner.setAttribute('dir', dirOf(block.content));
+      inner.dataset.ph = 'متن... (Enter برای بلوک جدید، / برای منو)';
+      inner.textContent = block.content;
+      inner.oninput = () => { block.content = inner.textContent; saveProject(); updateCardListText(); };
+      inner.onkeydown = e => {
+        if (e.key === 'Enter' && !e.shiftKey){
+          e.preventDefault();
+          const nb = createBlock('text');
+          card.blocks.splice(index + 1, 0, nb);
+          renderCanvas();
+          setTimeout(() => focusBlock(nb.id), 40);
+        }
+        else if (e.key === '/' && !inner.textContent){ e.preventDefault(); openSlashMenu(block.id, index + 1); }
+        else if (e.key === 'Backspace' && !inner.textContent && card.blocks.length > 1){
+          e.preventDefault();
+          removeBlock(card.id, block.id);
+        }
+      };
+      break;
+    case 'image':
+      inner.className = 'block-img' + (block.src ? '' : ' empty');
+      if (block.src){
+        inner.innerHTML = `<img src="${block.src}"><div class="acts">
+          <button data-a="replace">🔄</button>
+          <button data-a="search">🔍</button>
+          <button data-a="ai">🎨 AI</button>
+          <button data-a="del">🗑</button>
+        </div>`;
+        inner.querySelectorAll('[data-a]').forEach(b => {
+          b.onclick = e => {
+            e.stopPropagation();
+            const a = b.dataset.a;
+            if (a === 'del'){ block.src = null; saveProject(); renderCanvas(); }
+            else if (a === 'search'){ app.editingImageBlock = block; openModal('imageSearch'); }
+            else if (a === 'ai'){ generateImageForBlock(block, card); }
+            else if (a === 'replace'){ pickImageFile(src => { block.src = src; saveProject(); renderCanvas(); }); }
+          };
+        });
+      } else {
+        inner.textContent = '🖼 کلیک کنید یا تصویر را بکشید';
+        inner.onclick = e => { e.stopPropagation(); pickImageFile(src => { block.src = src; saveProject(); renderCanvas(); }); };
+        inner.ondragover = e => { e.preventDefault(); inner.style.borderColor = 'var(--ac)'; };
+        inner.ondragleave = () => { inner.style.borderColor = ''; };
+        inner.ondrop = e => {
+          e.preventDefault(); inner.style.borderColor = '';
+          const f = e.dataTransfer.files[0];
+          if (f && f.type.startsWith('image/')) fileToDataURL(f).then(src => { block.src = src; saveProject(); renderCanvas(); });
+        };
+      }
+      break;
+    case 'chart':
+      inner.className = 'block-chart';
+      inner.innerHTML = `
+        <div class="ctrl">
+          ${['bar','line','pie','doughnut'].map(t => `<button data-ct="${t}" class="${block.chartType === t ? 'active' : ''}">${t}</button>`).join('')}
+          <button data-ct="edit">✏️ داده</button>
+        </div>
+        <div class="cc"><canvas data-chart-id="${block.id}"></canvas></div>
+      `;
+      inner.querySelectorAll('[data-ct]').forEach(b => {
+        b.onclick = e => {
+          e.stopPropagation();
+          if (b.dataset.ct === 'edit'){
+            const l = prompt('برچسب‌ها (کاما):', block.data.labels.join(','));
+            const d = prompt('داده‌ها (کاما):', block.data.datasets[0].data.join(','));
+            if (l && d){
+              block.data.labels = l.split(',').map(s => s.trim());
+              block.data.datasets[0].data = d.split(',').map(s => parseFloat(s) || 0);
+              saveProject(); renderCanvas();
+            }
+          } else {
+            block.chartType = b.dataset.ct;
+            saveProject(); renderCanvas();
+          }
+        };
+      });
+      break;
+    case 'table':
+      inner.className = 'block-tbl';
+      inner.innerHTML = `<table>${block.rows.map((row, ri) => `<tr>${row.map(cell => `<${ri===0?'th':'td'}>${esc(cell)}</${ri===0?'th':'td'}>`).join('')}</tr>`).join('')}</table>`;
+      break;
+    case 'quote':
+      inner.className = 'block-quote';
+      inner.contentEditable = 'true';
+      inner.setAttribute('dir', dirOf(block.text));
+      inner.dataset.ph = 'نقل قول...';
+      inner.textContent = block.text;
+      inner.oninput = () => { block.text = inner.textContent; saveProject(); };
+      break;
+    case 'callout':
+      inner.className = 'block-callout';
+      inner.innerHTML = `<div class="ic">${block.icon || '💡'}</div><div class="txt" contenteditable="true" dir="${dirOf(block.text)}"></div>`;
+      inner.querySelector('.txt').textContent = block.text;
+      inner.querySelector('.txt').oninput = e => { block.text = e.target.textContent; saveProject(); };
+      break;
+    case 'divider':
+      inner.className = 'block-div';
+      break;
+    case 'timeline':
+      inner.className = 'block-tl';
+      inner.innerHTML = block.items.map(it => `
+        <div class="item"><div class="dot"></div><div class="c"><div class="d">${esc(it.date)}</div><div class="t">${esc(it.text)}</div></div></div>
+      `).join('');
+      break;
+    case 'code':
+      inner.className = 'block-code';
+      inner.contentEditable = 'true';
+      inner.textContent = block.code;
+      inner.oninput = () => { block.code = inner.textContent; saveProject(); };
+      break;
+    case 'columns':
+      inner.className = 'block-cols';
+      inner.dataset.n = block.n;
+      inner.innerHTML = block.cols.map((c, ci) => `<div contenteditable="true">${esc(c)}</div>`).join('');
+      inner.querySelectorAll('div[contenteditable]').forEach((d, ci) => {
+        d.oninput = () => { block.cols[ci] = d.textContent; saveProject(); };
+      });
+      break;
+    case 'embed':
+      if (block.url){
+        inner.className = 'block-embed';
+        inner.innerHTML = `<iframe src="${esc(block.url)}" allowfullscreen></iframe>`;
+      } else {
+        inner.className = 'block-img empty';
+        inner.textContent = '▶ لینک YouTube یا Vimeo را وارد کنید';
+        inner.onclick = () => {
+          const url = prompt('URL ویدیو:');
+          if (url){
+            block.url = url.includes('youtu') ? url.replace('watch?v=', 'embed/') : url;
+            saveProject(); renderCanvas();
+          }
+        };
+      }
+      break;
+    case 'gallery':
+      inner.className = 'block-gallery';
+      if (block.images.length){
+        inner.innerHTML = block.images.map(img => `<div class="g-item"><img src="${img}"></div>`).join('');
+      } else {
+        inner.innerHTML = `<div style="grid-column:1/-1;padding:20px;text-align:center;color:var(--mu);font-size:11px;border:1px dashed var(--bd);border-radius:6px;cursor:pointer">🎞 کلیک کنید تا تصاویر اضافه شوند</div>`;
+        inner.style.display = 'block';
+        inner.onclick = () => {
+          const input = document.createElement('input');
+          input.type = 'file'; input.accept = 'image/*'; input.multiple = true;
+          input.onchange = async e => {
+            for (const f of e.target.files) block.images.push(await fileToDataURL(f));
+            saveProject(); renderCanvas();
+          };
+          input.click();
+        };
+      }
+      break;
+    case 'venn':
+      inner.className = 'block-venn';
+      inner.innerHTML = `<svg viewBox="0 0 300 150" style="width:100%;max-width:400px"><circle cx="110" cy="75" r="60" fill="rgba(0,0,0,.1)" stroke="currentColor" stroke-width="2"/><circle cx="190" cy="75" r="60" fill="rgba(0,0,0,.1)" stroke="currentColor" stroke-width="2"/><text x="80" y="80" text-anchor="middle" font-size="11" font-family="Vazirmatn">${esc(block.a)}</text><text x="220" y="80" text-anchor="middle" font-size="11" font-family="Vazirmatn">${esc(block.b)}</text></svg>`;
+      break;
+    case 'button':
+      inner.style.cssText = 'display:inline-block;padding:10px 20px;background:var(--ac);color:var(--bg);border-radius:8px;font-weight:700;cursor:pointer;font-size:13px';
+      inner.textContent = block.text || 'دکمه';
+      inner.onclick = () => {
+        if (block.url) window.open(block.url, '_blank');
+      };
+      break;
+  }
+  
+  wrap.appendChild(inner);
+  return wrap;
+}
+
+function renderAllCharts(){
+  document.querySelectorAll('[data-chart-id]').forEach(canvas => {
+    const id = canvas.dataset.chartId;
+    let block;
+    for (const c of app.project.cards){
+      const b = c.blocks.find(x => x.id === id);
+      if (b){ block = b; break; }
+    }
+    if (!block) return;
+    if (block._chart){ try{ block._chart.destroy(); }catch(e){} }
+    block._chart = new Chart(canvas, {
+      type: block.chartType,
+      data: {
+        labels: block.data.labels,
+        datasets: [{
+          label: block.data.datasets[0].label,
+          data: block.data.datasets[0].data,
+          backgroundColor: ['#171717','#404040','#737373','#a3a3a3','#d4d4d4'],
+          borderColor: '#171717',
+          borderWidth: 2,
+        }]
+      },
+      options: {
+        responsive: true, maintainAspectRatio: false,
+        plugins: { legend: { display: ['pie','doughnut'].includes(block.chartType) } }
+      }
+    });
+  });
+}
+
+function updateCardListText(){
+  const card = app.project.cards.find(c => c.id === app.currentCardId);
+  if (!card) return;
+  const idx = app.project.cards.indexOf(card);
+  const el = $$('#cardsList .card-item')[idx];
+  if (el){
+    const firstH = card.blocks.find(b => b.type === 'heading');
+    const firstT = card.blocks.find(b => b.type === 'text');
+    const label = firstH?.text || firstT?.content || 'خالی';
+    el.querySelector('.ti').textContent = label.slice(0, 30) || 'خالی';
+  }
+}
+
+function focusBlock(blockId){
+  const el = document.querySelector(`[data-block-id="${blockId}"] [contenteditable]`);
+  if (el) el.focus();
+}
+
+function focusOrCreateNext(card, index){
+  const next = card.blocks[index + 1];
+  if (next && next.type === 'text'){
+    const el = document.querySelector(`[data-block-id="${next.id}"] [contenteditable]`);
+    if (el){ el.focus(); return; }
+  }
+  const nb = createBlock('text');
+  card.blocks.splice(index + 1, 0, nb);
+  renderCanvas();
+  setTimeout(() => focusBlock(nb.id), 40);
+}
+
+// Card & block operations
+function addCard(){
+  const card = createBlankCard();
+  app.project.cards.push(card);
+  app.currentCardId = card.id;
+  saveProject(); renderEditor();
+  pushHistory();
+  setTimeout(() => focusBlock(card.blocks[0].id), 60);
+}
+function removeCard(id){
+  if (app.project.cards.length === 1){ toast('⚠️ حداقل یک کارت لازم است', 'err'); return; }
+  const idx = app.project.cards.findIndex(c => c.id === id);
+  app.project.cards = app.project.cards.filter(c => c.id !== id);
+  if (app.currentCardId === id) app.currentCardId = app.project.cards[Math.max(0, idx - 1)].id;
+  saveProject(); renderEditor();
+  pushHistory();
+}
+function moveCard(i, d){
+  const j = i + d;
+  if (j < 0 || j >= app.project.cards.length) return;
+  [app.project.cards[i], app.project.cards[j]] = [app.project.cards[j], app.project.cards[i]];
+  saveProject(); renderEditor();
+}
+function duplicateCard(id){
+  const card = app.project.cards.find(c => c.id === id);
+  if (!card) return;
+  const copy = JSON.parse(JSON.stringify(card));
+  copy.id = uid();
+  copy.blocks.forEach(b => b.id = uid());
+  const idx = app.project.cards.findIndex(c => c.id === id);
+  app.project.cards.splice(idx + 1, 0, copy);
+  app.currentCardId = copy.id;
+  saveProject(); renderEditor();
+  pushHistory();
+  toast('✅ کارت کپی شد', 'ok');
+}
+function removeBlock(cardId, blockId){
+  const card = app.project.cards.find(c => c.id === cardId);
+  if (!card) return;
+  card.blocks = card.blocks.filter(b => b.id !== blockId);
+  saveProject(); renderCanvas();
+}
+function moveBlock(cardId, blockId, d){
+  const card = app.project.cards.find(c => c.id === cardId);
+  if (!card) return;
+  const i = card.blocks.findIndex(b => b.id === blockId);
+  const j = i + d;
+  if (j < 0 || j >= card.blocks.length) return;
+  [card.blocks[i], card.blocks[j]] = [card.blocks[j], card.blocks[i]];
+  saveProject(); renderCanvas();
+}
+function addBlockToCurrent(type){
+  const card = app.project.cards.find(c => c.id === app.currentCardId);
+  if (!card) return;
+  card.blocks.push(createBlock(type));
+  saveProject(); renderCanvas();
+  pushHistory();
+}
+
+// ═══════════════════════════════════════════════════════
+// SLASH MENU
+// ═══════════════════════════════════════════════════════
+function openSlashMenu(blockId, insertIndex){
+  app.slashTarget = { blockId, insertIndex };
+  const menu = $('#slashMenu');
+  menu.innerHTML = '';
+  BLOCK_TYPES.forEach(bt => {
+    const item = document.createElement('div');
+    item.className = 'slash-item';
+    item.innerHTML = `<div class="ic">${bt.icon}</div><div class="mt"><div class="nm">${bt.name}</div><div class="ds">${bt.desc}</div></div>`;
+    item.onclick = () => insertBlock(bt.type);
+    menu.appendChild(item);
+  });
+  menu.style.left = (window.innerWidth / 2 - 140) + 'px';
+  menu.style.top = Math.min(window.innerHeight / 2 - 150, 200) + 'px';
+  menu.classList.add('show');
+}
+function closeSlashMenu(){ $('#slashMenu').classList.remove('show'); app.slashTarget = null; }
+function insertBlock(type){
+  if (!app.slashTarget) return;
+  const card = app.project.cards.find(c => c.id === app.currentCardId);
+  if (!card) return;
+  const b = createBlock(type);
+  card.blocks.splice(app.slashTarget.insertIndex, 0, b);
+  closeSlashMenu();
+  saveProject(); renderCanvas();
+  pushHistory();
+  setTimeout(() => focusBlock(b.id), 60);
+}
+
+// ═══════════════════════════════════════════════════════
+// RIGHT PANEL
+// ═══════════════════════════════════════════════════════
+function renderRightPanel(){
+  const card = app.project.cards.find(c => c.id === app.currentCardId);
+  if (!card) return;
+  
+  const lg = $('#layoutGrid');
+  lg.innerHTML = '';
+  LAYOUTS.forEach(l => {
+    const b = document.createElement('button');
+    b.className = 'layout-chip' + ((card.layout || 'auto') === l.id ? ' active' : '');
+    b.innerHTML = `<span class="i">${l.icon}</span><span>${l.name}</span>`;
+    b.onclick = () => { card.layout = l.id; saveProject(); renderRightPanel(); };
+    lg.appendChild(b);
+  });
+  
+  const tg = $('#themeGrid');
+  tg.innerHTML = '';
+  Object.entries(SLIDE_THEMES).forEach(([k, v]) => {
+    const b = document.createElement('button');
+    b.className = 'theme-chip' + (app.project.theme === k ? ' active' : '');
+    b.innerHTML = `<div class="sw" style="background:${v.preview}"></div><div>${v.name}</div>`;
+    b.onclick = () => { app.project.theme = k; saveProject(); renderCanvas(); renderRightPanel(); };
+    tg.appendChild(b);
+  });
+  
+  const notes = $('#cardNotes');
+  notes.value = card.notes || '';
+  notes.oninput = () => { card.notes = notes.value; saveProject(); };
+}
+
+// ═══════════════════════════════════════════════════════
+// UNDO / REDO
+// ═══════════════════════════════════════════════════════
+function pushHistory(){
+  if (!app.project) return;
+  const snapshot = JSON.stringify(app.project);
+  if (app.history[app.historyIndex] === snapshot) return;
+  app.history = app.history.slice(0, app.historyIndex + 1);
+  app.history.push(snapshot);
+  app.historyIndex = app.history.length - 1;
+  if (app.history.length > 50){ app.history.shift(); app.historyIndex--; }
+}
+function undo(){
+  if (app.historyIndex <= 0){ toast('چیزی برای واگرد نیست'); return; }
+  app.historyIndex--;
+  app.project = JSON.parse(app.history[app.historyIndex]);
+  renderEditor();
+  toast('↶ واگرد شد');
+}
+function redo(){
+  if (app.historyIndex >= app.history.length - 1){ toast('چیزی برای ازنو نیست'); return; }
+  app.historyIndex++;
+  app.project = JSON.parse(app.history[app.historyIndex]);
+  renderEditor();
+  toast('↷ ازنو شد');
+}
+
+// ═══════════════════════════════════════════════════════
+// HELPER: TEXT SPLIT / OUTLINE
+// ═══════════════════════════════════════════════════════
+function splitTextLocal(text, n){
+  text = String(text || '').trim();
+  if (!text) return Array(n).fill('');
+  if (n <= 1) return [text];
+  const paras = text.split(/\n\s*\n/).filter(Boolean);
+  if (paras.length >= n){
+    const per = paras.length / n;
+    return Array.from({length:n}, (_,i) => paras.slice(Math.round(i*per), Math.round((i+1)*per)).join('\n\n'));
+  }
+  const targetLen = text.length / n;
+  const parts = []; let rem = text;
+  for (let i = 0; i < n - 1 && rem.length; i++){
+    const idx = Math.min(rem.length, Math.max(30, Math.round(targetLen)));
+    const search = rem.slice(Math.max(0, idx - 80), Math.min(rem.length, idx + 80));
+    const sentenceEnd = Math.max(search.lastIndexOf('. '), search.lastIndexOf('؟ '), search.lastIndexOf('! '));
+    const cut = sentenceEnd > 0 ? Math.max(0, idx - 80) + sentenceEnd + 2 : idx;
+    parts.push(rem.slice(0, cut).trim());
+    rem = rem.slice(cut).trim();
+  }
+  if (rem) parts.push(rem.trim());
+  while (parts.length < n) parts.push('');
+  return parts;
+}
+function extractTitleLocal(chunk){
+  const lines = chunk.split('\n').filter(Boolean);
+  if (lines.length > 1 && lines[0].length < 80 && !lines[0].endsWith('.')) return { title: lines[0].trim(), body: lines.slice(1).join('\n').trim() };
+  const first = chunk.split(/[.!?\n]/)[0].trim();
+  if (first.length < 80 && chunk.length > first.length + 20) return { title: first, body: chunk.slice(first.length + 1).trim() };
+  return { title: '', body: chunk };
+}
+
+async function generateOutlineAI(topic, n, lang){
+  const langName = {fa:'فارسی',en:'English',ar:'العربية',tr:'Türkçe'}[lang] || 'فارسی';
+  const prompt = `یک ارائه حرفه‌ای درباره "${topic}" بساز. دقیقاً ${n} اسلاید. خروجی فقط JSON: [{"title":"...","body":"..."}]. هر body حداکثر ۳ جمله. زبان: ${langName}.`;
+  try{
+    const res = await fetch('https://gen.pollinations.ai/v1/chat/completions', {
+      method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({ model:'openai-fast', messages:[{role:'user',content:prompt}], temperature:.7, max_tokens:2000 })
+    });
+    if (!res.ok) throw 0;
+    const d = await res.json();
+    const c = d.choices?.[0]?.message?.content || '';
+    const m = c.match(/\[[\s\S]*\]/);
+    if (m){
+      const parsed = JSON.parse(m[0]);
+      return parsed.map(x => ({ title:String(x.title||'').trim(), body:String(x.body||'').trim() }));
+    }
+  }catch(e){}
+  return null;
+}
+function fallbackOutline(topic, n){
+  const base = [
+    { title: `مقدمه: ${topic}`, body: `${topic} از موضوعات مهم امروز است.` },
+    { title: 'اهمیت', body: `اهمیت ${topic} در زندگی روزمره دیده می‌شود.` },
+    { title: 'فرصت‌ها', body: `فرصت‌های جدیدی در ${topic} ایجاد شده.` },
+    { title: 'چالش‌ها', body: `چالش‌های ${topic} را باید شناخت.` },
+    { title: 'نتیجه‌گیری', body: `${topic} مسیر روشنی برای آینده دارد.` },
+  ];
+  return Array.from({length:n}, (_, i) => base[i % base.length]);
+}
+
+// ═══════════════════════════════════════════════════════
+// WIKI + COMMONS + AI IMAGE
+// ═══════════════════════════════════════════════════════
+async function wikiSearch(q, lang){
+  try{
+    const r = await fetch(`https://${lang}.wikipedia.org/w/api.php?action=query&list=search&srsearch=${encodeURIComponent(q)}&format=json&origin=*&srlimit=3`);
+    if (!r.ok) return [];
+    const d = await r.json();
+    return (d?.query?.search || []).map(h => h.title);
+  }catch(e){ return []; }
+}
+async function wikiExtract(title, lang){
+  try{
+    const r = await fetch(`https://${lang}.wikipedia.org/w/api.php?action=query&prop=extracts&explaintext=1&titles=${encodeURIComponent(title)}&format=json&origin=*&redirects=1`);
+    if (!r.ok) return '';
+    const d = await r.json();
+    return Object.values(d?.query?.pages || {})[0]?.extract || '';
+  }catch(e){ return ''; }
+}
+async function fetchB64(url, timeout = 30000){
+  const ctrl = new AbortController();
+  const timer = setTimeout(() => ctrl.abort(), timeout);
+  try{
+    const r = await fetch(url, {signal: ctrl.signal});
+    if (!r.ok) throw new Error('HTTP ' + r.status);
+    const blob = await r.blob();
+    return await new Promise((ok, ko) => { const f = new FileReader(); f.onload = () => ok(f.result); f.onerror = ko; f.readAsDataURL(blob); });
+  }finally{ clearTimeout(timer); }
+}
+async function generateImageAI(topic, title, body, tries = 3){
+  const clean = s => String(s||'').replace(/[#*_`\n]/g,' ').replace(/\s+/g,' ').trim().slice(0, 140);
+  const subj = clean(title) || clean(body) || clean(topic) || 'abstract concept';
+  const prompt = `${subj}, minimalist black and white illustration, clean design, high contrast, no text`;
+  let lastErr;
+  for (let a = 1; a <= tries; a++){
+    try{
+      const seed = Math.floor(Math.random() * 999999);
+      return await fetchB64(`https://image.pollinations.ai/prompt/${encodeURIComponent(prompt)}?width=1024&height=576&nologo=true&seed=${seed}&model=flux`, 40000);
+    }catch(e){
+      lastErr = e;
+      if (a < tries) await sleep(1200 * a);
+    }
+  }
+  throw lastErr || new Error('تولید ناموفق');
+}
+async function generateImageForBlock(block, card){
+  block._generating = true;
+  renderCanvas();
+  try{
+    const title = card.blocks.find(b => b.type === 'heading')?.text || '';
+    const body = card.blocks.find(b => b.type === 'text')?.content || '';
+    block.src = await generateImageAI(app.project.title, title, body);
+    saveProject();
+    toast('✅ تصویر ساخته شد', 'ok');
+  }catch(e){ toast('❌ ' + e.message, 'err'); }
+  block._generating = false;
+  renderCanvas();
+}
+async function wikiSearchThumbs(q, lang, max = 20){
+  try{
+    const titles = await wikiSearch(q, lang);
+    if (!titles.length) return [];
+    const res = [];
+    for (const t of titles.slice(0, 2)){
+      try{
+        const r = await fetch(`https://${lang}.wikipedia.org/w/api.php?action=query&prop=images&imlimit=30&titles=${encodeURIComponent(t)}&format=json&origin=*`);
+        const d = await r.json();
+        const p = Object.values(d?.query?.pages || {})[0];
+        const imgs = (p?.images || []).map(x => x.title).filter(t => /\.(jpg|jpeg|png)$/i.test(t) && !/icon|logo|flag|symbol|commons-|ambox|star|arrow/i.test(t)).slice(0, 20);
+        if (imgs.length){
+          const r2 = await fetch(`https://${lang}.wikipedia.org/w/api.php?action=query&prop=imageinfo&iiprop=url&iiurlwidth=500&titles=${encodeURIComponent(imgs.join('|'))}&format=json&origin=*`);
+          const d2 = await r2.json();
+          for (const pp of Object.values(d2?.query?.pages || {})){
+            const ii = pp?.imageinfo?.[0];
+            if (ii?.thumburl) res.push({ thumb:ii.thumburl, full: ii.thumburl.replace(/\/\d+px-/, '/1024px-') });
+          }
+        }
+      }catch(e){}
+      if (res.length >= max) break;
+    }
+    return res.slice(0, max);
+  }catch(e){ return []; }
+}
+async function commonsSearch(q, max = 20){
+  try{
+    const url = 'https://commons.wikimedia.org/w/api.php?' + new URLSearchParams({ action:'query', format:'json', origin:'*', generator:'search', gsrsearch: q + ' filetype:bitmap', gsrnamespace:'6', gsrlimit:String(max), prop:'imageinfo', iiprop:'url', iiurlwidth:'500' });
+    const r = await fetch(url);
+    const d = await r.json();
+    const res = [];
+    for (const p of Object.values(d?.query?.pages || {})){
+      const ii = p?.imageinfo?.[0];
+      if (ii?.thumburl) res.push({ thumb:ii.thumburl, full: ii.thumburl.replace(/\/\d+px-/, '/1024px-') });
+    }
+    return res;
+  }catch(e){ return []; }
+}
+
+// ═══════════════════════════════════════════════════════
+// MODALS
+// ═══════════════════════════════════════════════════════
+function openModal(type, data){
+  const ovl = $('#modalOvl');
+  const m = $('#modalContent');
+  m.innerHTML = '';
+  ovl.classList.add('show');
+  
+  if (type === 'aiSetup') renderAISetupModal(m);
+  else if (type === 'textSetup') renderTextSetupModal(m);
+  else if (type === 'imageSearch') renderImageSearchModal(m);
+  else if (type === 'export') renderExportModal(m);
+  else if (type === 'share') renderShareModal(m);
+  else if (type === 'comments') renderCommentsModal(m);
+  else if (type === 'history') renderHistoryModal(m);
+  else if (type === 'settings') renderSettingsModal(m);
+}
+function closeModal(){ $('#modalOvl').classList.remove('show'); app.editingImageBlock = null; }
+$('#modalOvl').onclick = e => { if (e.target === $('#modalOvl')) closeModal(); };
+
+function renderAISetupModal(m){
+  m.innerHTML = `
+    <div class="mdl-head"><div><h2>✨ ایجاد با هوش مصنوعی</h2><p>موضوع بده، خودکار می‌سازیم</p></div><button class="btn btn-g" onclick="closeModal()">✕</button></div>
+    <div class="mdl-body">
+      <div class="rp-field"><label class="rp-label">نوع محتوا</label>
+        <select class="rp-input" id="mAiType">
+          <option value="presentation">📊 ارائه</option>
+          <option value="document">📄 سند</option>
+          <option value="website">🌐 وب‌سایت</option>
+          <option value="social">📱 شبکه اجتماعی</option>
+          <option value="graphic">🎨 گرافیک</option>
+        </select>
+      </div>
+      <div class="rp-field"><label class="rp-label">موضوع</label><input type="text" class="rp-input" id="mAiTopic" placeholder="مثال: هوش مصنوعی در پزشکی"></div>
+      <div class="rp-field"><label class="rp-label">تعداد کارت</label><input type="number" class="rp-input" id="mAiCount" min="2" max="30" value="5"></div>
+      <div class="rp-field"><label class="rp-label">زبان</label>
+        <select class="rp-input" id="mAiLang"><option value="fa">فارسی</option><option value="en">English</option><option value="ar">العربية</option></select>
+      </div>
+      <div class="rp-field"><label class="rp-label">منبع محتوا</label>
+        <div style="display:flex;gap:6px;flex-wrap:wrap">
+          <label style="display:flex;align-items:center;gap:4px;padding:7px 10px;background:var(--p2);border:1px solid var(--bd);border-radius:8px;cursor:pointer;font-size:12px"><input type="radio" name="mAiSrc" value="ai" checked> 🤖 هوش مصنوعی</label>
+          <label style="display:flex;align-items:center;gap:4px;padding:7px 10px;background:var(--p2);border:1px solid var(--bd);border-radius:8px;cursor:pointer;font-size:12px"><input type="radio" name="mAiSrc" value="wiki"> 📚 ویکی‌پدیا</label>
+        </div>
+      </div>
+      <div class="rp-field"><label class="rp-label">تصاویر</label>
+        <div style="display:flex;gap:6px;flex-wrap:wrap">
+          <label style="display:flex;align-items:center;gap:4px;padding:7px 10px;background:var(--p2);border:1px solid var(--bd);border-radius:8px;cursor:pointer;font-size:12px"><input type="radio" name="mAiImg" value="none" checked> 🚫 بدون</label>
+          <label style="display:flex;align-items:center;gap:4px;padding:7px 10px;background:var(--p2);border:1px solid var(--bd);border-radius:8px;cursor:pointer;font-size:12px"><input type="radio" name="mAiImg" value="wiki"> 📷 ویکی</label>
+          <label style="display:flex;align-items:center;gap:4px;padding:7px 10px;background:var(--p2);border:1px solid var(--bd);border-radius:8px;cursor:pointer;font-size:12px"><input type="radio" name="mAiImg" value="ai"> 🎨 AI</label>
+        </div>
+      </div>
+    </div>
+    <div class="mdl-foot"><span class="note">۳۰-۶۰ ثانیه</span><button class="btn btn-p" id="mAiGo">✨ شروع</button></div>
+  `;
+  $('#mAiGo').onclick = async () => {
+    const type = $('#mAiType').value;
+    const topic = $('#mAiTopic').value.trim();
+    const n = Math.max(2, Math.min(30, parseInt($('#mAiCount').value) || 5));
+    const lang = $('#mAiLang').value;
+    const src = document.querySelector('input[name="mAiSrc"]:checked').value;
+    const imgSrc = document.querySelector('input[name="mAiImg"]:checked').value;
+    if (!topic){ toast('⚠️ موضوع را وارد کنید', 'err'); return; }
+    const btn = $('#mAiGo');
+    btn.disabled = true; btn.innerHTML = '<span class="sp"></span> در حال ساخت...';
+    
+    try{
+      let outline = null;
+      if (src === 'ai') outline = await generateOutlineAI(topic, n, lang);
+      if (!outline){
+        const titles = await wikiSearch(topic, lang);
+        for (const t of titles){
+          const ex = await wikiExtract(t, lang);
+          if (ex && ex.length > 300){
+            const parts = ex.split(/\n\s*\n/).filter(p => p.length > 40).slice(0, n);
+            outline = parts.map((p, i) => {
+              const first = p.split(/[.!?]/)[0];
+              return { title: first.length > 10 && first.length < 100 ? first.trim() : `بخش ${i+1}`, body: p.slice(0, 500).trim() };
+            });
+            break;
+          }
+        }
+      }
+      if (!outline) outline = fallbackOutline(topic, n);
+      while (outline.length < n) outline.push(outline[outline.length - 1]);
+      outline = outline.slice(0, n);
+      
+      const p = newProject(type, topic.slice(0, 60));
+      p.cards = outline.map(it => {
+        const card = createBlankCard();
+        card.blocks = [];
+        if (it.title) card.blocks.push({ id:uid(), type:'heading', level:1, text:it.title });
+        if (it.body) card.blocks.push({ id:uid(), type:'text', content:it.body });
+        if (!card.blocks.length) card.blocks = createBlankCard().blocks;
+        return card;
+      });
+      
+      if (imgSrc !== 'none'){
+        for (let i = 0; i < p.cards.length; i++){
+          btn.innerHTML = `<span class="sp"></span> تصویر ${i+1}/${n}...`;
+          try{
+            let src;
+            if (imgSrc === 'ai') src = await generateImageAI(topic, outline[i].title, outline[i].body, 2);
+            else {
+              const wt = await wikiSearchThumbs(outline[i].title || topic, lang, 1);
+              if (wt.length) src = await fetchB64(wt[0].full, 15000);
+            }
+            if (src) p.cards[i].blocks.push({ id:uid(), type:'image', src });
+          }catch(e){}
+          await sleep(400);
+        }
+      }
+      
+      app.project = p;
+      saveProject();
+      closeModal();
+      openEditor();
+      pushHistory();
+      toast(`✅ ${n} کارت ساخته شد`, 'ok');
+    }catch(e){
+      toast('❌ ' + e.message, 'err');
+      btn.disabled = false; btn.innerHTML = '✨ شروع';
+    }
+  };
+}
+
+function renderTextSetupModal(m){
+  m.innerHTML = `
+    <div class="mdl-head"><div><h2>📝 از متن بساز</h2><p>متن یا فایل txt/md را وارد کنید</p></div><button class="btn btn-g" onclick="closeModal()">✕</button></div>
+    <div class="mdl-body">
+      <div class="rp-field"><label class="rp-label">نوع محتوا</label>
+        <select class="rp-input" id="mTxType"><option value="presentation">📊 ارائه</option><option value="document">📄 سند</option><option value="website">🌐 وب‌سایت</option></select>
+      </div>
+      <div class="rp-field"><label class="rp-label">متن</label><textarea class="rp-txt" id="mTxText" style="min-height:160px" placeholder="متن را اینجا بچسبانید..."></textarea></div>
+      <div style="display:flex;gap:8px;margin-bottom:12px">
+        <button class="btn" id="mTxImport">📁 وارد فایل</button>
+        <input type="file" id="mTxFile" accept=".txt,.md" hidden>
+      </div>
+      <div class="rp-field"><label class="rp-label">تعداد کارت</label><input type="number" class="rp-input" id="mTxCount" min="1" max="30" value="5"></div>
+    </div>
+    <div class="mdl-foot"><button class="btn" onclick="closeModal()">انصراف</button><button class="btn btn-p" id="mTxGo">✨ بساز</button></div>
+  `;
+  $('#mTxImport').onclick = () => $('#mTxFile').click();
+  $('#mTxFile').onchange = async e => {
+    const f = e.target.files[0]; if (!f) return;
+    $('#mTxText').value = await f.text();
+  };
+  $('#mTxGo').onclick = () => {
+    const type = $('#mTxType').value;
+    const text = $('#mTxText').value.trim();
+    const n = Math.max(1, Math.min(30, parseInt($('#mTxCount').value) || 5));
+    if (!text){ toast('⚠️ متن خالی است', 'err'); return; }
+    const chunks = splitTextLocal(text, n);
+    const p = newProject(type, (chunks[0]?.slice(0,40) || 'بدون عنوان').replace(/\n/g,' '));
+    p.cards = chunks.map(ch => {
+      const { title, body } = extractTitleLocal(ch);
+      const card = createBlankCard();
+      card.blocks = [];
+      if (title) card.blocks.push({ id:uid(), type:'heading', level:1, text:title });
+      if (body) card.blocks.push({ id:uid(), type:'text', content:body });
+      if (!card.blocks.length) card.blocks.push({ id:uid(), type:'text', content:ch });
+      return card;
+    });
+    app.project = p;
+    saveProject();
+    closeModal();
+    openEditor();
+    pushHistory();
+    toast(`✅ ${n} کارت ساخته شد`, 'ok');
+  };
+}
+
+function renderImageSearchModal(m){
+  m.innerHTML = `
+    <div class="mdl-head"><div><h2>🔍 جستجوی تصویر</h2><p>ویکی‌پدیا، کامانز و AI</p></div><button class="btn btn-g" onclick="closeModal()">✕</button></div>
+    <div class="mdl-body">
+      <div style="display:flex;gap:8px;margin-bottom:12px">
+        <input type="text" class="rp-input" id="mImgQ" placeholder="موضوع..." style="flex:1">
+        <button class="btn btn-p" id="mImgGo">🔍</button>
+      </div>
+      <div class="img-search-grid">
+        <div class="img-col"><div class="col-head"><span>📷 ویکی‌پدیا</span><span class="col-count" id="mWikiCnt">—</span></div><div class="col-body" id="mWikiR"><div class="col-empty">جستجو بزنید</div></div></div>
+        <div class="img-col"><div class="col-head"><span>🌐 کامانز</span><span class="col-count" id="mComCnt">—</span></div><div class="col-body" id="mComR"><div class="col-empty">جستجو بزنید</div></div></div>
+        <div class="img-col"><div class="col-head"><span>🎨 AI</span><span class="col-count" id="mAiCnt">—</span></div><div class="col-body" id="mAiR"><div class="col-empty">جستجو بزنید</div></div></div>
+      </div>
+    </div>
+  `;
+  const run = async () => {
+    const q = $('#mImgQ').value.trim();
+    if (!q) return;
+    const lang = dirOf(q) === 'rtl' ? 'fa' : 'en';
+    
+    $('#mWikiR').innerHTML = '<div class="col-empty"><span class="sp"></span></div>';
+    const w = await wikiSearchThumbs(q, lang, 15);
+    $('#mWikiCnt').textContent = w.length;
+    $('#mWikiR').innerHTML = w.length ? '' : '<div class="col-empty">یافت نشد</div>';
+    w.forEach(it => {
+      const box = document.createElement('div');
+      box.className = 'img-tile';
+      box.innerHTML = `<img src="${it.thumb}">`;
+      box.onclick = () => applyImage(it.full, box);
+      $('#mWikiR').appendChild(box);
+    });
+    
+    $('#mComR').innerHTML = '<div class="col-empty"><span class="sp"></span></div>';
+    const c = await commonsSearch(q, 15);
+    $('#mComCnt').textContent = c.length;
+    $('#mComR').innerHTML = c.length ? '' : '<div class="col-empty">یافت نشد</div>';
+    c.forEach(it => {
+      const box = document.createElement('div');
+      box.className = 'img-tile';
+      box.innerHTML = `<img src="${it.thumb}">`;
+      box.onclick = () => applyImage(it.full, box);
+      $('#mComR').appendChild(box);
+    });
+    
+    $('#mAiR').innerHTML = '';
+    $('#mAiCnt').textContent = '0/3';
+    for (let i = 0; i < 3; i++){
+      const box = document.createElement('div');
+      box.className = 'img-tile loading';
+      box.innerHTML = '<span class="sp"></span>';
+      $('#mAiR').appendChild(box);
+      (async () => {
+        try{
+          const src = await generateImageAI(q, q, '', 2);
+          box.classList.remove('loading');
+          box.innerHTML = `<img src="${src}">`;
+          box.onclick = () => applyImage(src, box);
+        }catch(e){
+          box.classList.remove('loading');
+          box.innerHTML = '<div class="col-empty">❌</div>';
+        }
+        $('#mAiCnt').textContent = `${i+1}/3`;
+      })();
+    }
+  };
+  const applyImage = async (src, box) => {
+    if (!app.editingImageBlock) return;
+    document.querySelectorAll('.img-tile').forEach(t => t.classList.remove('applied'));
+    box.classList.add('applied');
+    if (src.startsWith('http')){
+      box.style.opacity = '.6';
+      try{ src = await fetchB64(src, 20000); }catch(e){ toast('❌ ' + e.message, 'err'); box.style.opacity = '1'; return; }
+      box.style.opacity = '1';
+    }
+    app.editingImageBlock.src = src;
+    saveProject();
+    setTimeout(() => { closeModal(); renderCanvas(); toast('✅ اعمال شد', 'ok'); }, 300);
+  };
+  $('#mImgGo').onclick = run;
+  $('#mImgQ').onkeydown = e => { if (e.key === 'Enter') run(); };
+}
+
+function renderExportModal(m){
+  m.innerHTML = `
+    <div class="mdl-head"><div><h2>⤓ خروجی</h2><p>فرمت مورد نظر</p></div><button class="btn btn-g" onclick="closeModal()">✕</button></div>
+    <div class="mdl-body">
+      <div style="display:grid;gap:8px">
+        <button class="btn" style="justify-content:flex-start;padding:14px" data-exp="pptx">📊 PowerPoint (PPTX) — قابل ویرایش</button>
+        <button class="btn" style="justify-content:flex-start;padding:14px" data-exp="pdf">📄 PDF — برای چاپ و اشتراک</button>
+        <button class="btn" style="justify-content:flex-start;padding:14px" data-exp="png">🖼 PNG (Zip) — هر کارت جدا</button>
+        <button class="btn" style="justify-content:flex-start;padding:14px" data-exp="html">🌐 HTML — وب‌سایت مستقل</button>
+        <button class="btn" style="justify-content:flex-start;padding:14px" data-exp="json">📦 JSON — پشتیبان/انتقال</button>
+        <button class="btn" style="justify-content:flex-start;padding:14px" data-exp="md">📝 Markdown</button>
+      </div>
+    </div>
+  `;
+  m.querySelectorAll('[data-exp]').forEach(b => {
+    b.onclick = () => { closeModal(); doExport(b.dataset.exp); };
+  });
+}
+
+async function doExport(format){
+  const p = app.project;
+  if (!p){ toast('⚠️ پروژه خالی', 'err'); return; }
+  try{
+    if (format === 'json'){
+      const blob = new Blob([JSON.stringify(p, null, 2)], {type:'application/json'});
+      downloadBlob(blob, `${p.title || 'project'}.json`);
+      toast('✅ JSON دانلود شد', 'ok');
+      return;
+    }
+    if (format === 'md'){
+      let md = `# ${p.title}\n\n`;
+      p.cards.forEach((c, i) => {
+        md += `## کارت ${i+1}\n\n`;
+        c.blocks.forEach(b => {
+          if (b.type === 'heading') md += `### ${b.text || ''}\n\n`;
+          else if (b.type === 'text') md += `${b.content || ''}\n\n`;
+          else if (b.type === 'quote') md += `> ${b.text || ''}\n\n`;
+          else if (b.type === 'image') md += `![image](${b.src || ''})\n\n`;
+          else if (b.type === 'table') md += b.rows.map(r => `| ${r.join(' | ')} |`).join('\n') + '\n\n';
+        });
+      });
+      downloadBlob(new Blob([md], {type:'text/markdown'}), `${p.title || 'project'}.md`);
+      toast('✅ Markdown دانلود شد', 'ok');
+      return;
+    }
+    if (format === 'html'){
+      exportHTML(p);
+      toast('✅ HTML دانلود شد', 'ok');
+      return;
+    }
+    if (format === 'pptx'){ await exportPPTX(p); return; }
+    if (format === 'pdf' || format === 'png'){
+      await exportImages(p, format);
+      toast(`✅ ${format.toUpperCase()} دانلود شد`, 'ok');
+      return;
+    }
+  }catch(e){ toast('❌ ' + e.message, 'err'); }
+}
+
+function downloadBlob(blob, filename){
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = filename;
+  a.click();
+  setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+}
+
+async function exportPPTX(p){
+  const pptx = new PptxGenJS();
+  const aspectMap = { '16:9': 'LAYOUT_16x9', '4:3': 'LAYOUT_4x3' };
+  if (aspectMap[p.aspect]) pptx.layout = aspectMap[p.aspect];
+  else {
+    const sizes = { '1:1':[8,8], '9:16':[5.625,10], '4:5':[7.5,9.375], 'a4':[8.27,11.69] };
+    const [w, h] = sizes[p.aspect] || [10, 5.625];
+    pptx.defineLayout({ name:'CUSTOM', width:w, height:h });
+    pptx.layout = 'CUSTOM';
+  }
+  
+  const tc = { light:{bg:'FFFFFF',tx:'171717'}, dark:{bg:'0A0A0A',tx:'FAFAFA'}, mono:{bg:'F5F5F5',tx:'000000'}, bold:{bg:'000000',tx:'FFFFFF'}, elegant:{bg:'FAFAFA',tx:'171717'}, minimal:{bg:'FAFAFA',tx:'18181B'}, vibrant:{bg:'1A1A1A',tx:'FAFAFA'}, academic:{bg:'FEFEFE',tx:'1A252F'}, warm:{bg:'FEF3C7',tx:'7C2D12'} }[p.theme] || { bg:'FFFFFF', tx:'171717' };
+  
+  p.cards.forEach(card => {
+    const s = pptx.addSlide();
+    s.background = { color: tc.bg };
+    let y = 0.4;
+    card.blocks.forEach(b => {
+      const d = dirOf(b.text || b.content || '');
+      const align = d === 'rtl' ? 'right' : 'left';
+      const rtl = d === 'rtl';
+      if (b.type === 'heading'){
+        s.addText(b.text || '', { x:0.5, y, w:9, h:0.8, fontSize:(b.level===1?26:b.level===2?20:16), bold:true, color:tc.tx, fontFace:'Vazirmatn', align, rtlMode:rtl });
+        y += 0.9;
+      } else if (b.type === 'text'){
+        s.addText(b.content || '', { x:0.5, y, w:9, h:1.5, fontSize:14, color:tc.tx, fontFace:'Vazirmatn', align, rtlMode:rtl, valign:'top', lineSpacingMultiple:1.3 });
+        y += 1.55;
+      } else if (b.type === 'image' && b.src){
+        s.addImage({ data:b.src, x:0.5, y, w:9, h:2.4, sizing:{ type:'contain', w:9, h:2.4 } });
+        y += 2.5;
+      } else if (b.type === 'quote'){
+        s.addText(`"${b.text}"`, { x:0.7, y, w:8.6, h:0.8, fontSize:15, italic:true, color:tc.tx, fontFace:'Vazirmatn', align, rtlMode:rtl });
+        y += 0.9;
+      } else if (b.type === 'table' && b.rows.length){
+        const data = b.rows.map(r => r.map(c => ({ text:c, options:{ fontSize:11, color:tc.tx, fill:{ color:tc.bg } } })));
+        s.addTable(data, { x:0.5, y, w:9, border:{ pt:1, color:tc.tx === 'FFFFFF' ? '404040' : 'D4D4D4' } });
+        y += 0.4 * b.rows.length;
+      } else if (b.type === 'timeline'){
+        b.items.forEach(it => {
+          s.addText(`${it.date} — ${it.text}`, { x:0.7, y, w:8.6, h:0.35, fontSize:12, color:tc.tx, fontFace:'Vazirmatn' });
+          y += 0.4;
+        });
+      } else if (b.type === 'divider'){
+        s.addShape(pptx.ShapeType.line, { x:0.5, y:y+0.1, w:9, h:0, line:{ color:tc.tx === 'FFFFFF' ? '404040' : 'E5E5E5', width:1 } });
+        y += 0.3;
+      }
+    });
+    if (app.logoData){
+      s.addImage({ data:app.logoData, x:0.3, y:5.1, w:0.8, h:0.3, sizing:{ type:'contain', w:0.8, h:0.3 } });
+    }
+  });
+  await pptx.writeFile({ fileName: `${p.title || 'project'}.pptx` });
+}
+
+async function exportImages(p, format){
+  // Create hidden slides
+  const container = document.createElement('div');
+  container.style.cssText = 'position:fixed;top:0;left:-10000px;width:900px';
+  document.body.appendChild(container);
+  
+  p.cards.forEach((card, i) => {
+    const slide = document.createElement('div');
+    slide.className = 'canvas-card';
+    slide.dataset.aspect = p.aspect;
+    slide.dataset.theme = p.theme;
+    slide.style.cssText = 'width:900px;margin-bottom:10px';
+    card.blocks.forEach(b => {
+      if (b.type === 'heading') slide.innerHTML += `<div class="block-h" data-level="${b.level}" dir="${dirOf(b.text)}">${esc(b.text)}</div>`;
+      else if (b.type === 'text') slide.innerHTML += `<div class="block-t" dir="${dirOf(b.content)}">${esc(b.content).replace(/\n/g,'<br>')}</div>`;
+      else if (b.type === 'image' && b.src) slide.innerHTML += `<div class="block-img"><img src="${b.src}"></div>`;
+      else if (b.type === 'quote') slide.innerHTML += `<div class="block-quote">${esc(b.text)}</div>`;
+      else if (b.type === 'callout') slide.innerHTML += `<div class="block-callout"><div class="ic">${b.icon}</div><div class="txt">${esc(b.text)}</div></div>`;
+      else if (b.type === 'divider') slide.innerHTML += `<div class="block-div"></div>`;
+      else if (b.type === 'table') slide.innerHTML += `<div class="block-tbl"><table>${b.rows.map((r,ri) => `<tr>${r.map(c => `<${ri===0?'th':'td'}>${esc(c)}</${ri===0?'th':'td'}>`).join('')}</tr>`).join('')}</table></div>`;
+      else if (b.type === 'timeline') slide.innerHTML += `<div class="block-tl">${b.items.map(it => `<div class="item"><div class="dot"></div><div class="c"><div class="d">${esc(it.date)}</div><div class="t">${esc(it.text)}</div></div></div>`).join('')}</div>`;
+    });
+    container.appendChild(slide);
+  });
+  
+  await sleep(300);
+  
+  const canvases = [];
+  for (const slide of container.querySelectorAll('.canvas-card')){
+    const c = await html2canvas(slide, { backgroundColor:'#fff', scale:2, useCORS:true, allowTaint:true, logging:false });
+    canvases.push(c);
+  }
+  document.body.removeChild(container);
+  
+  if (format === 'pdf'){
+    const { jsPDF } = window.jspdf;
+    let pdf = null;
+    canvases.forEach(c => {
+      if (!pdf){
+        pdf = new jsPDF({ orientation: c.width >= c.height ? 'landscape' : 'portrait', unit:'px', format:[c.width, c.height], hotfixes:['px_scaling'] });
+      } else {
+        pdf.addPage([c.width, c.height], c.width >= c.height ? 'landscape' : 'portrait');
+      }
+      pdf.addImage(c.toDataURL('image/jpeg', .95), 'JPEG', 0, 0, c.width, c.height);
+    });
+    pdf.save(`${p.title || 'project'}.pdf`);
+  } else {
+    const zip = new JSZip();
+    const folder = zip.folder('cards');
+    canvases.forEach((c, i) => {
+      folder.file(`card-${String(i+1).padStart(2,'0')}.png`, c.toDataURL('image/png').split(',')[1], {base64:true});
+    });
+    const blob = await zip.generateAsync({type:'blob'});
+    downloadBlob(blob, `${p.title || 'project'}.zip`);
+  }
+}
+
+function exportHTML(p){
+  const styles = `*{box-sizing:border-box;margin:0;padding:0}body{font-family:Vazirmatn,Tahoma,sans-serif;background:#fafafa;padding:30px 20px;direction:rtl}.card{background:#fff;color:#171717;border-radius:12px;padding:32px 40px;margin:0 auto 20px;box-shadow:0 8px 32px rgba(0,0,0,.08);aspect-ratio:16/9;max-width:900px;position:relative;overflow:hidden;display:flex;flex-direction:column}.card[data-theme="dark"]{background:#0a0a0a;color:#fafafa}.card[data-theme="bold"]{background:#000;color:#fff}.card[data-theme="mono"]{background:#f5f5f5;border:2px solid #000}h1{font-size:26px;font-weight:900;margin-bottom:12px}p{font-size:14px;line-height:1.7;margin-bottom:10px}img{max-width:100%;max-height:300px;object-fit:contain;border-radius:8px;margin:8px 0}blockquote{border-right:4px solid currentColor;padding:6px 16px;font-style:italic;margin:8px 0}table{width:100%;border-collapse:collapse;font-size:13px;margin:8px 0}td,th{border:1px solid #ddd;padding:8px}th{background:#f5f5f5}`;
+  let html = `<!DOCTYPE html><html lang="fa" dir="rtl"><head><meta charset="utf-8"><title>${esc(p.title)}</title><style>${styles}</style></head><body>`;
+  p.cards.forEach(card => {
+    html += `<div class="card" data-theme="${p.theme}">`;
+    card.blocks.forEach(b => {
+      if (b.type === 'heading') html += `<h1 dir="${dirOf(b.text)}">${esc(b.text)}</h1>`;
+      else if (b.type === 'text') html += `<p dir="${dirOf(b.content)}">${esc(b.content).replace(/\n/g,'<br>')}</p>`;
+      else if (b.type === 'image' && b.src) html += `<img src="${b.src}">`;
+      else if (b.type === 'quote') html += `<blockquote>${esc(b.text)}</blockquote>`;
+      else if (b.type === 'table') html += `<table>${b.rows.map((r,ri) => `<tr>${r.map(c => `<${ri===0?'th':'td'}>${esc(c)}</${ri===0?'th':'td'}>`).join('')}</tr>`).join('')}</table>`;
+    });
+    html += '</div>';
+  });
+  html += '</body></html>';
+  downloadBlob(new Blob([html], {type:'text/html'}), `${p.title || 'project'}.html`);
+}
+
+function renderShareModal(m){
+  if (!app.project) return;
+  const shareUrl = `${location.origin}${location.pathname}#project=${app.project.id}`;
+  m.innerHTML = `
+    <div class="mdl-head"><div><h2>🔗 اشتراک‌گذاری</h2><p>لینک پروژه</p></div><button class="btn btn-g" onclick="closeModal()">✕</button></div>
+    <div class="mdl-body">
+      <div class="rp-field">
+        <label class="rp-label">لینک عمومی</label>
+        <div style="display:flex;gap:6px">
+          <input type="text" class="rp-input" value="${shareUrl}" readonly id="shareUrlInput" style="flex:1">
+          <button class="btn btn-p" onclick="copyText('${shareUrl}')">📋 کپی</button>
+        </div>
+      </div>
+      <div style="padding:12px;background:var(--p2);border-radius:8px;font-size:12px;line-height:1.6;color:var(--mu);margin-top:12px">
+        💡 این لینک فقط در همین مرورگر کار می‌کند. برای به اشتراک‌گذاری واقعی، پروژه را با فرمت JSON دانلود کنید و به دوستتان بفرستید.
+      </div>
+      <div style="display:flex;gap:6px;margin-top:12px;flex-wrap:wrap">
+        <button class="btn" onclick="doExport('json')">📦 دانلود JSON</button>
+        <button class="btn" onclick="doExport('pdf')">📄 دانلود PDF</button>
+        <button class="btn" onclick="doExport('html')">🌐 دانلود HTML</button>
+      </div>
+    </div>
+  `;
+}
+
+function copyText(text){
+  navigator.clipboard.writeText(text).then(() => toast('✅ کپی شد', 'ok')).catch(() => toast('❌ خطا', 'err'));
+}
+
+function renderCommentsModal(m){
+  if (!app.project) return;
+  const comments = app.project.comments || [];
+  const card = app.project.cards.find(c => c.id === app.currentCardId);
+  const cardComments = comments.filter(c => c.cardId === app.currentCardId);
+  m.innerHTML = `
+    <div class="mdl-head"><div><h2>💬 کامنت‌ها</h2><p>کارت فعلی</p></div><button class="btn btn-g" onclick="closeModal()">✕</button></div>
+    <div class="mdl-body">
+      <div id="commentsList"></div>
+      <div class="comment-input-row">
+        <input type="text" class="rp-input" id="newComment" placeholder="نظر خود را بنویسید..." style="flex:1">
+        <button class="btn btn-p" id="addCommentBtn">ارسال</button>
+      </div>
+    </div>
+  `;
+  const list = $('#commentsList');
+  if (!cardComments.length){ list.innerHTML = '<div style="text-align:center;padding:20px;color:var(--mu);font-size:12px">هنوز کامنتی ثبت نشده</div>'; }
+  else {
+    cardComments.forEach(c => {
+      const el = document.createElement('div');
+      el.className = 'comment';
+      el.innerHTML = `<div class="comment-head"><span class="comment-name">${esc(c.author)}</span><span class="comment-date">${new Date(c.date).toLocaleString('fa-IR')}</span></div><div class="comment-body">${esc(c.text)}</div>`;
+      list.appendChild(el);
+    });
+  }
+  const add = () => {
+    const t = $('#newComment').value.trim();
+    if (!t) return;
+    app.project.comments = app.project.comments || [];
+    app.project.comments.push({ id:uid(), cardId:app.currentCardId, author:'شما', text:t, date:Date.now() });
+    saveProject();
+    $('#newComment').value = '';
+    renderCommentsModal(m);
+    toast('✅ کامنت ثبت شد', 'ok');
+  };
+  $('#addCommentBtn').onclick = add;
+  $('#newComment').onkeydown = e => { if (e.key === 'Enter') add(); };
+}
+
+function renderHistoryModal(m){
+  if (!app.project) return;
+  m.innerHTML = `
+    <div class="mdl-head"><div><h2>🕐 تاریخچه نسخه‌ها</h2><p>${app.history.length} نسخه ذخیره شده</p></div><button class="btn btn-g" onclick="closeModal()">✕</button></div>
+    <div class="mdl-body">
+      <div style="text-align:center;padding:20px;color:var(--mu);font-size:12px">
+        ${app.history.length > 0 ? `آخرین نسخه: ${new Date().toLocaleTimeString('fa-IR')}` : 'هنوز تغییری ثبت نشده'}
+        <br><br>
+        با استفاده از Ctrl+Z و Ctrl+Y می‌توانید تغییرات را واگرد/ازنو کنید.
+      </div>
+      <button class="btn" style="width:100%" onclick="saveProject();closeModal();toast('✅ پروژه ذخیره شد','ok')">💾 ذخیره دستی</button>
+    </div>
+  `;
+}
+
+function renderSettingsModal(m){
+  m.innerHTML = `
+    <div class="mdl-head"><div><h2>⚙️ تنظیمات</h2><p>ظاهر و اطلاعات</p></div><button class="btn btn-g" onclick="closeModal()">✕</button></div>
+    <div class="mdl-body">
+      <div class="rp-title">ظاهر اپ</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:20px">
+        <button class="btn ${app.theme==='light'?'btn-p':''}" onclick="setAppTheme('light');renderSettingsModal(this.parentElement.parentElement.parentElement)">☀️ روشن</button>
+        <button class="btn ${app.theme==='dark'?'btn-p':''}" onclick="setAppTheme('dark');renderSettingsModal(this.parentElement.parentElement.parentElement)">🌙 تیره</button>
+      </div>
+      <div class="rp-title">درباره</div>
+      <div style="padding:12px;background:var(--p2);border-radius:8px;font-size:12px;line-height:1.7;color:var(--mu)">
+        <b>BlackWhite</b> — استودیوی محتوای هوشمند 🐼<br>
+        نسخه ۱.۰
+      </div>
+    </div>
+  `;
+}
+
+// ═══════════════════════════════════════════════════════
+// PRESENT MODE
+// ═══════════════════════════════════════════════════════
+function openPresent(){
+  if (!app.project) return;
+  app.presentIdx = app.project.cards.findIndex(c => c.id === app.currentCardId);
+  if (app.presentIdx < 0) app.presentIdx = 0;
+  $('#present').classList.add('active');
+  renderPresentSlide();
+}
+function exitPresent(){ $('#present').classList.remove('active'); }
+function nextSlide(){ if (app.presentIdx < app.project.cards.length - 1){ app.presentIdx++; renderPresentSlide(); } }
+function prevSlide(){ if (app.presentIdx > 0){ app.presentIdx--; renderPresentSlide(); } }
+function renderPresentSlide(){
+  const card = app.project.cards[app.presentIdx];
+  if (!card) return;
+  const stage = $('#presentStage');
+  stage.innerHTML = '';
+  const wrap = document.createElement('div');
+  wrap.className = 'canvas-card';
+  wrap.dataset.aspect = app.project.aspect;
+  wrap.dataset.theme = app.project.theme;
+  wrap.style.maxHeight = 'calc(100vh - 40px)';
+  
+  // Render blocks (read-only)
+  card.blocks.forEach(b => {
+    const el = document.createElement('div');
+    el.className = 'block';
+    if (b.type === 'heading'){
+      el.innerHTML = `<div class="block-h" data-level="${b.level}" dir="${dirOf(b.text)}">${esc(b.text)}</div>`;
+    } else if (b.type === 'text'){
+      el.innerHTML = `<div class="block-t" dir="${dirOf(b.content)}">${esc(b.content).replace(/\n/g,'<br>')}</div>`;
+    } else if (b.type === 'image' && b.src){
+      el.innerHTML = `<div class="block-img"><img src="${b.src}"></div>`;
+    } else if (b.type === 'quote'){
+      el.innerHTML = `<div class="block-quote">${esc(b.text)}</div>`;
+    } else if (b.type === 'callout'){
+      el.innerHTML = `<div class="block-callout"><div class="ic">${b.icon || '💡'}</div><div class="txt">${esc(b.text)}</div></div>`;
+    } else if (b.type === 'divider'){
+      el.innerHTML = `<div class="block-div"></div>`;
+    } else if (b.type === 'table'){
+      el.innerHTML = `<div class="block-tbl"><table>${b.rows.map((r,ri) => `<tr>${r.map(c => `<${ri===0?'th':'td'}>${esc(c)}</${ri===0?'th':'td'}>`).join('')}</tr>`).join('')}</table></div>`;
+    } else if (b.type === 'timeline'){
+      el.innerHTML = `<div class="block-tl">${b.items.map(it => `<div class="item"><div class="dot"></div><div class="c"><div class="d">${esc(it.date)}</div><div class="t">${esc(it.text)}</div></div></div>`).join('')}</div>`;
+    } else if (b.type === 'columns'){
+      el.innerHTML = `<div class="block-cols" data-n="${b.n}">${b.cols.map(c => `<div>${esc(c)}</div>`).join('')}</div>`;
+    }
+    wrap.appendChild(el);
+  });
+  
+  stage.appendChild(wrap);
+  $('#presentInfo').textContent = app.project.title;
+  $('#presentCounter').textContent = `${app.presentIdx + 1}/${app.project.cards.length}`;
+}
+function toggleFullscreen(){
+  if (!document.fullscreenElement) $('#present').requestFullscreen?.();
+  else document.exitFullscreen?.();
+}
+
+// ═══════════════════════════════════════════════════════
+// AI AGENT CHAT
+// ═══════════════════════════════════════════════════════
+function faToEn(s){ return String(s).replace(/[۰-۹]/g, d => '۰۱۲۳۴۵۶۷۸۹'.indexOf(d)).replace(/[٠-٩]/g, d => '٠١٢٣٤٥٦٧٨٩'.indexOf(d)); }
+
+function parseLocalIntent(raw){
+  const msg = faToEn(String(raw).trim());
+  const low = msg.toLowerCase();
+  
+  // Add card
+  if (/(اسلاید|کارت|صفحه)/.test(low) && /(جدید|اضافه|بساز|ایجاد|بده|بزار)/.test(low)){
+    const m = msg.match(/(?:درباره|راجع به|با موضوع|با عنوان)\s+(.{2,80})/);
+    let title = '', body = '';
+    if (m){ title = m[1].replace(/[.،!؟].*$/, '').trim(); body = `توضیح درباره ${title}.`; }
+    return { action:'add_card', title, body };
+  }
+  
+  // Delete card
+  if (/(حذف|پاک)/.test(low) && /(اسلاید|کارت|صفحه|آخر|اول)/.test(low)){
+    let idx = null;
+    if (/آخر/.test(low)) idx = app.project.cards.length - 1;
+    else if (/(اول|1)/.test(low)) idx = 0;
+    else if (/(دوم|2)/.test(low)) idx = 1;
+    else if (/(سوم|3)/.test(low)) idx = 2;
+    else { const nm = msg.match(/(\d+)/); if (nm) idx = parseInt(nm[1]) - 1; }
+    return { action:'delete_card', index: idx };
+  }
+  
+  // Themes
+  if (/تیره|dark|شب/.test(low) && !/روشن/.test(low)) return { action:'change_theme', theme:'dark' };
+  if (/روشن|light|سفید/.test(low) && !/تیره/.test(low)) return { action:'change_theme', theme:'light' };
+  if (/مونو|monochrome/.test(low)) return { action:'change_theme', theme:'mono' };
+  if (/پرکنتراست|bold/.test(low)) return { action:'change_theme', theme:'bold' };
+  if (/الگانت|elegant|شیک/.test(low)) return { action:'change_theme', theme:'elegant' };
+  if (/مینیمال|minimal/.test(low)) return { action:'change_theme', theme:'minimal' };
+  if (/ویتا|vibrant/.test(low)) return { action:'change_theme', theme:'vibrant' };
+  if (/آکادمیک|academic/.test(low)) return { action:'change_theme', theme:'academic' };
+  if (/گرم|warm/.test(low)) return { action:'change_theme', theme:'warm' };
+  
+  // Tone
+  if (/رسمی/.test(low)) return { action:'change_tone', tone:'formal' };
+  if (/دوستانه|صمیمی|خودمانی/.test(low)) return { action:'change_tone', tone:'friendly' };
+  if (/آکادمیک|علمی|دانشگاهی/.test(low)) return { action:'change_tone', tone:'academic' };
+  if (/طنز|شوخ/.test(low)) return { action:'change_tone', tone:'humorous' };
+  
+  // Images
+  if (/(بازسازی|دوباره|جدید|باز).*(تصویر|عکس)|تصویر.*(بازسازی|جدید|بکن)/.test(low)) return { action:'regenerate_images' };
+  
+  // Add block
+  const blockMap = { 'نمودار|chart':'chart', 'جدول|table':'table', 'نقل.?قول|کوت':'quote', 'کالوت|نکته|هشدار':'callout', 'خط.?زمانی|تایم.?لاین':'timeline', 'تصویر|عکس':'image', 'جداکننده|خط':'divider', 'عنوان|تیتر':'heading', 'متن|پاراگراف':'text', 'کد|code':'code', 'ستون':'columns', 'ویدیو|ویدئو':'embed', 'گالری':'gallery', 'ون':'venn', 'دکمه':'button' };
+  if (/(اضافه|بساز|بزار|بذار)/.test(low) && /(بلوک|بخش)/.test(low)){
+    for (const [k, v] of Object.entries(blockMap)){ if (new RegExp(k).test(low)) return { action:'add_block', blockType:v }; }
+    return { action:'reply', message:'چه نوع بلوکی؟ متن، نمودار، جدول، نقل‌قول...' };
+  }
+  
+  // Duplicate
+  if (/(تکرار|کپی|duplicate)/.test(low)) return { action:'duplicate_card' };
+  
+  // Help
+  if (/^(کمک|help|راهنما|چیکار)/.test(low)) return { action:'reply', message:`🐼 می‌تونم این کارها رو انجام بدم:
+  
+➕ «یک اسلاید جدید»
+➕ «یک اسلاید درباره X اضافه کن»
+🗑 «کارت اول رو حذف کن»
+🌙 «تیره کن» / «روشن کن»
+🎩 «رسمی‌تر کن»
+😊 «دوستانه کن»
+🎨 «تصاویر رو بازسازی کن»
+📊 «یک نمودار اضافه کن»
+⎘ «این کارت رو تکرار کن»` };
+  
+  return null;
+}
+
+async function aiInterpretWithAI(userMsg){
+  const ctx = {
+    title: app.project.title,
+    type: app.project.type,
+    theme: app.project.theme,
+    cardCount: app.project.cards.length,
+    cards: app.project.cards.slice(0, 10).map((c, i) => ({
+      index: i,
+      blocks: c.blocks.slice(0, 4).map(b => ({ type:b.type, text:(b.text||b.content||'').slice(0, 100) }))
+    }))
+  };
+  
+  const prompt = `تو دستیار هوشمند "BlackWhite" هستی. کاربر می‌خواهد ارائه را ویرایش کنی.
+
+اطلاعات:
+- عنوان: ${ctx.title}
+- تعداد کارت: ${ctx.cardCount}
+- تم: ${ctx.theme}
+- کارت‌ها: ${JSON.stringify(ctx.cards)}
+
+پیام: "${userMsg}"
+
+فقط JSON خالص برگردان (بدون markdown):
+{"action":"add_card","title":"...","body":"..."}
+{"action":"delete_card","index":0}
+{"action":"change_theme","theme":"light|dark|mono|bold|elegant|minimal|vibrant|academic|warm"}
+{"action":"change_tone","tone":"formal|friendly|academic|humorous"}
+{"action":"regenerate_images"}
+{"action":"add_block","blockType":"heading|text|image|chart|table|quote|callout|timeline|divider|code|columns|embed|gallery|venn|button"}
+{"action":"duplicate_card","index":0}
+{"action":"reply","message":"پاسخ"}
+
+نمونه: "یک اسلاید درباره ورزش اضافه کن" → {"action":"add_card","title":"ورزش","body":"ورزش باعث سلامت بدن و افزایش انرژی می‌شود."}`;
+  
+  const endpoints = [
+    { url:'https://text.pollinations.ai/openai', method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ model:'openai-fast', messages:[{role:'user',content:prompt}], temperature:.4, max_tokens:800, response_format:{type:'json_object'} }), parse:d => d.choices?.[0]?.message?.content || '' },
+    { url:`https://text.pollinations.ai/${encodeURIComponent(prompt)}?model=openai-fast`, method:'GET', parse:d => typeof d === 'string' ? d : JSON.stringify(d) }
+  ];
+  
+  for (const ep of endpoints){
+    try{
+      const r = await fetch(ep.url, { method: ep.method, headers: ep.headers, body: ep.body });
+      if (!r.ok) continue;
+      const data = await r.json().catch(() => null);
+      if (!data) continue;
+      const raw = ep.parse(data);
+      const parsed = extractJSON(raw);
+      if (parsed && parsed.action) return parsed;
+    }catch(e){}
+  }
+  return null;
+}
+
+function extractJSON(text){
+  if (!text) return null;
+  if (typeof text === 'object') return text;
+  text = String(text).replace(/^```(?:json)?\s*/i, '').replace(/```\s*$/, '').trim();
+  try{ return JSON.parse(text); }catch(e){}
+  const f = text.indexOf('{'), l = text.lastIndexOf('}');
+  if (f >= 0 && l > f){
+    try{ return JSON.parse(text.slice(f, l + 1)); }catch(e){}
+  }
+  return null;
+}
+
+async function handleAI(){
+  const input = $('#aiInput').value.trim();
+  if (!input){ return; }
+  if (!app.project){ toast('⚠️ ابتدا پروژه بسازید', 'err'); return; }
+  
+  addChatMsg('user', input);
+  $('#aiInput').value = '';
+  $('#aiSend').disabled = true;
+  
+  try{
+    // Layer 1: local
+    let res = parseLocalIntent(input);
+    // Layer 2: AI
+    if (!res){
+      addChatThinking();
+      res = await aiInterpretWithAI(input);
+      removeChatThinking();
+    }
+    if (!res) res = { action:'reply', message:'متأسفم، متوجه نشدم. بنویسید «کمک» تا لیست کارها را ببینم.' };
+    await applyAIAction(res);
+  }catch(e){
+    addChatMsg('error', '❌ ' + e.message);
+  }finally{
+    $('#aiSend').disabled = false;
+    $('#aiInput').focus();
+  }
+}
+
+function addChatMsg(role, text){
+  const body = $('#aiBody');
+  const el = document.createElement('div');
+  el.className = 'ai-msg ' + (role === 'user' ? 'user' : role === 'error' ? 'ai error' : 'ai');
+  el.textContent = text;
+  body.appendChild(el);
+  body.scrollTop = body.scrollHeight;
+}
+function addChatThinking(){
+  const body = $('#aiBody');
+  const el = document.createElement('div');
+  el.id = 'aiThink';
+  el.className = 'ai-msg ai';
+  el.innerHTML = '<span class="sp"></span> در حال پردازش...';
+  el.style.opacity = '.7';
+  body.appendChild(el);
+  body.scrollTop = body.scrollHeight;
+}
+function removeChatThinking(){ const el = document.getElementById('aiThink'); if (el) el.remove(); }
+
+async function applyAIAction(res){
+  const action = res.action;
+  if (action === 'add_card'){
+    const card = createBlankCard();
+    card.blocks = [];
+    if (res.title) card.blocks.push({ id:uid(), type:'heading', level:1, text:res.title });
+    if (res.body) card.blocks.push({ id:uid(), type:'text', content:res.body });
+    if (!card.blocks.length) card.blocks = createBlankCard().blocks;
+    app.project.cards.push(card);
+    app.currentCardId = card.id;
+    saveProject(); renderEditor(); pushHistory();
+    addChatMsg('ai', `✅ کارت جدید${res.title ? `: «${res.title}»` : ''} اضافه شد.`);
+    return;
+  }
+  if (action === 'delete_card'){
+    if (app.project.cards.length <= 1){ addChatMsg('ai', '⚠️ حداقل یک کارت باید بماند.'); return; }
+    let idx = typeof res.index === 'number' ? res.index : app.project.cards.findIndex(c => c.id === app.currentCardId);
+    if (idx < 0 || idx >= app.project.cards.length){ addChatMsg('ai', `⚠️ شماره نامعتبر. بین ۱ تا ${app.project.cards.length}.`); return; }
+    const t = app.project.cards[idx].blocks.find(b => b.type === 'heading')?.text || `کارت ${idx+1}`;
+    removeCard(app.project.cards[idx].id);
+    addChatMsg('ai', `🗑 «${t}» حذف شد.`);
+    return;
+  }
+  if (action === 'change_theme'){
+    if (!SLIDE_THEMES[res.theme]){ addChatMsg('ai', '❌ تم نامعتبر.'); return; }
+    app.project.theme = res.theme;
+    saveProject(); renderCanvas(); renderRightPanel();
+    addChatMsg('ai', `🎨 تم → «${SLIDE_THEMES[res.theme].name}»`);
+    return;
+  }
+  if (action === 'change_tone'){
+    const toneNames = { formal:'رسمی', friendly:'دوستانه', academic:'آکادمیک', humorous:'طنزآمیز' };
+    const toneMap = { formal:'رسمی و حرفه‌ای', friendly:'دوستانه و صمیمی', academic:'علمی و آکادمیک', humorous:'طنزآمیز و شاد' };
+    addChatMsg('ai', `⏳ در حال بازنویسی با لحن ${toneNames[res.tone] || res.tone}...`);
+    try{
+      const cardsData = app.project.cards.map(c => ({ blocks: c.blocks.filter(b => b.type === 'text' || b.type === 'heading').map(b => ({ type:b.type, text:b.text || b.content || '' })) }));
+      const prompt = `متن این ارائه رو با لحن «${toneMap[res.tone] || res.tone}» بازنویسی کن. ساختار حفظ شود. فقط JSON: [{"blocks":[{"type":"heading|text","text":"..."}]}]\n\n${JSON.stringify(cardsData)}`;
+      const r = await fetch(`https://text.pollinations.ai/${encodeURIComponent(prompt)}?model=openai-fast`);
+      if (!r.ok) throw new Error('AI error');
+      const txt = await r.text();
+      const m = txt.match(/\[[\s\S]*\]/);
+      if (!m) throw new Error('پاسخ نامعتبر');
+      const newData = JSON.parse(m[0]);
+      newData.forEach((item, i) => {
+        if (!app.project.cards[i]) return;
+        let bi = 0;
+        app.project.cards[i].blocks.forEach(b => {
+          if (b.type === 'text' || b.type === 'heading'){
+            const nb = item.blocks?.[bi];
+            if (nb){ if (b.type === 'text') b.content = nb.text || ''; else b.text = nb.text || ''; bi++; }
+          }
+        });
+      });
+      saveProject(); renderEditor();
+      addChatMsg('ai', `✅ همه کارت‌ها با لحن ${toneNames[res.tone]} بازنویسی شدند.`);
+    }catch(e){ addChatMsg('error', '❌ ' + e.message); }
+    return;
+  }
+  if (action === 'regenerate_images'){
+    const blocks = app.project.cards.flatMap(c => c.blocks.filter(b => b.type === 'image'));
+    if (!blocks.length){ addChatMsg('ai', 'ℹ️ هیچ تصویری موجود نیست.'); return; }
+    addChatMsg('ai', `🎨 بازسازی ${blocks.length} تصویر...`);
+    let cnt = 0;
+    for (const b of blocks){
+      try{
+        const card = app.project.cards.find(c => c.blocks.includes(b));
+        const t = card?.blocks.find(x => x.type === 'heading')?.text || '';
+        const body = card?.blocks.find(x => x.type === 'text')?.content || '';
+        b.src = await generateImageAI(app.project.title, t, body, 2);
+        cnt++;
+      }catch(e){}
+    }
+    saveProject(); renderCanvas();
+    addChatMsg('ai', `✅ ${cnt} تصویر بازسازی شد.`);
+    return;
+  }
+  if (action === 'add_block'){
+    const card = app.project.cards.find(c => c.id === app.currentCardId);
+    if (!card){ addChatMsg('ai', '❌ کارتی فعال نیست.'); return; }
+    card.blocks.push(createBlock(res.blockType));
+    saveProject(); renderCanvas(); pushHistory();
+    const nm = BLOCK_TYPES.find(b => b.type === res.blockType)?.name || res.blockType;
+    addChatMsg('ai', `✅ بلوک «${nm}» اضافه شد.`);
+    return;
+  }
+  if (action === 'duplicate_card'){
+    const idx = typeof res.index === 'number' ? res.index : app.project.cards.findIndex(c => c.id === app.currentCardId);
+    if (idx < 0 || !app.project.cards[idx]){ addChatMsg('ai', '❌ کارت نامعتبر.'); return; }
+    duplicateCard(app.project.cards[idx].id);
+    addChatMsg('ai', `⎘ کارت ${idx+1} تکرار شد.`);
+    return;
+  }
+  if (action === 'reply' || !action){
+    addChatMsg('ai', res.message || 'انجام شد.');
+    return;
+  }
+  addChatMsg('ai', '🤔 دستور را نمی‌شناسم. بنویسید «کمک».');
+}
+
+// ═══════════════════════════════════════════════════════
+// HELPERS
+// ═══════════════════════════════════════════════════════
+function pickImageFile(cb){
+  const input = document.createElement('input');
+  input.type = 'file';
+  input.accept = 'image/*';
+  input.onchange = async e => {
+    const f = e.target.files[0];
+    if (f) cb(await fileToDataURL(f));
+  };
+  input.click();
+}
+function fileToDataURL(file){
+  return new Promise((ok, ko) => { const r = new FileReader(); r.onload = () => ok(r.result); r.onerror = ko; r.readAsDataURL(file); });
+}
+function shareProject(id){
+  const url = `${location.origin}${location.pathname}#project=${id}`;
+  copyText(url);
+}
+function deleteProjectConfirm(id){
+  if (!confirm('این پروژه حذف شود؟')) return;
+  deleteProject(id);
+  renderDashboard();
+  toast('🗑 پروژه حذف شد', 'ok');
+}
+
+// ═══════════════════════════════════════════════════════
+// EVENT BINDINGS
+// ═══════════════════════════════════════════════════════
+$('#docTitle').oninput = e => { if (app.project){ app.project.title = e.target.value || 'بدون عنوان'; saveProject(); } };
+$('#presentBtn').onclick = openPresent;
+$('#commentBtn').onclick = () => openModal('comments');
+$('#historyBtn').onclick = () => openModal('history');
+$('#shareBtn').onclick = () => openModal('share');
+$('#agentBtn').onclick = () => { $('#aiPanel').classList.add('show'); $('#aiFab').classList.remove('show'); };
+$('#themeEditorBtn').onclick = () => {
+  if (!app.project) return;
+  const keys = Object.keys(SLIDE_THEMES);
+  const i = keys.indexOf(app.project.theme);
+  app.project.theme = keys[(i + 1) % keys.length];
+  saveProject(); renderCanvas(); renderRightPanel();
+  toast(`🎨 ${SLIDE_THEMES[app.project.theme].name}`, 'ok');
+};
+$('#exportBtn').onclick = () => openModal('export');
+
+$('#sidebarToggle').onclick = () => $('#dashSidebar').classList.toggle('hide');
+$('#globalSearch').oninput = e => { app.search = e.target.value; if (app.tab === 'projects') renderDashboard(); };
+$('#dashSettingsBtn').onclick = () => openModal('settings');
+$('#notifBtn').onclick = () => toast('اعلانات: هیچ اعلان جدیدی نیست');
+
+$('#aiFab').onclick = () => { $('#aiPanel').classList.add('show'); $('#aiFab').classList.remove('show'); };
+$('#aiClose').onclick = () => { $('#aiPanel').classList.remove('show'); if (app.project) $('#aiFab').classList.add('show'); };
+$('#aiSend').onclick = handleAI;
+$('#aiInput').onkeydown = e => { if (e.key === 'Enter' && !e.shiftKey){ e.preventDefault(); handleAI(); } };
+$$('.ai-sugg button').forEach(b => b.onclick = () => { $('#aiInput').value = b.dataset.sug; handleAI(); });
+
+// Keyboard
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape'){
+    closeModal();
+    closeSlashMenu();
+    $('#present').classList.remove('active');
+  }
+  if (e.ctrlKey && e.key === 'z'){ e.preventDefault(); undo(); }
+  if (e.ctrlKey && (e.key === 'y' || (e.shiftKey && e.key === 'Z'))){ e.preventDefault(); redo(); }
+  if (e.ctrlKey && e.key === 's'){ e.preventDefault(); saveProject(); toast('✅ ذخیره شد', 'ok'); }
+  if (e.ctrlKey && e.key === '/' && app.project){ e.preventDefault(); openSlashMenu(null, app.project.cards.find(c => c.id === app.currentCardId)?.blocks.length || 0); }
+  if (e.key === 'ArrowRight' && $('#present').classList.contains('active')) nextSlide();
+  if (e.key === 'ArrowLeft' && $('#present').classList.contains('active')) prevSlide();
+});
+document.addEventListener('click', e => {
+  if (!e.target.closest('#slashMenu') && !e.target.closest('[contenteditable]')) closeSlashMenu();
+});
+
+
+// ═════════════════════════════════════════════════════════════════════
+// SUPABASE CONFIG — paste the project's PUBLIC anon/publishable key here.
+// Never put a service_role or secret key in a browser application.
+const SUPABASE_URL = 'https://jtzvidnofailzguumruf.supabase.co';
+const SUPABASE_ANON_KEY = 'PASTE_YOUR_SUPABASE_ANON_OR_PUBLISHABLE_KEY_HERE';
+let supabaseClient = null;
+let studioUser = null;
+let studioAuthMode = 'login';
+let studioBootedUser = null;
+let cloudSaveTimer = null;
+const cloudSaveQueue = new Map();
+
+function authMessage(message, type=''){
+  const el = document.getElementById('authMessage');
+  if (!el) return;
+  el.textContent = message;
+  el.className = 'auth-message show' + (type ? ' ' + type : '');
+}
+function clearAuthMessage(){
+  const el = document.getElementById('authMessage');
+  if (el){ el.textContent=''; el.className='auth-message'; }
+}
+function setAuthMode(mode){
+  studioAuthMode = mode;
+  clearAuthMessage();
+  const signup = mode === 'signup';
+  document.getElementById('authTitle').textContent = signup ? 'ساخت حساب کاربری' : 'ورود به حساب کاربری';
+  document.getElementById('authSubtitle').textContent = signup
+    ? 'با ایمیل خود حساب بسازید تا پروژه‌هایتان به‌صورت خصوصی ذخیره شوند.'
+    : 'برای دسترسی به پروژه‌ها و همگام‌سازی ابری وارد حساب خود شوید.';
+  document.getElementById('authSubmit').textContent = signup ? 'ثبت‌نام' : 'ورود';
+  document.getElementById('authSwitchText').textContent = signup ? 'قبلاً حساب ساخته‌ای؟' : 'حساب کاربری نداری؟';
+  document.getElementById('authSwitch').textContent = signup ? 'ورود' : 'ثبت‌نام';
+  document.getElementById('authPassword').autocomplete = signup ? 'new-password' : 'current-password';
+  document.getElementById('authForgot').style.display = signup ? 'none' : '';
+}
+function setAuthBusy(busy){
+  const btn = document.getElementById('authSubmit');
+  btn.disabled = busy;
+  btn.textContent = busy ? 'لطفاً صبر کنید…' : (studioAuthMode === 'signup' ? 'ثبت‌نام' : 'ورود');
+}
+function showAuthGate(message=''){
+  document.getElementById('authGate').classList.add('show');
+  if (message) authMessage(message, 'error');
+}
+function hideAuthGate(){
+  document.getElementById('authGate').classList.remove('show');
+}
+function configureSupabase(){
+  const key = SUPABASE_ANON_KEY.trim();
+  if (!window.supabase || !window.supabase.createClient) {
+    authMessage('کتابخانه Supabase بارگذاری نشد. اتصال اینترنت و دسترسی به CDN را بررسی کنید.', 'error');
+    return false;
+  }
+  if (!key || key.includes('PASTE_YOUR_')) {
+    document.getElementById('authConfig').style.display = 'block';
+    document.getElementById('authSubmit').disabled = true;
+    authMessage('کلید عمومی Supabase هنوز در فایل قرار نگرفته است. پس از واردکردن anon/publishable key، ورود و ثبت‌نام فعال می‌شود.', 'error');
+    return false;
+  }
+  try {
+    supabaseClient = window.supabase.createClient(SUPABASE_URL, key, {
+      auth: { persistSession:true, autoRefreshToken:true, detectSessionInUrl:true }
+    });
+    document.getElementById('authConfig').style.display = 'none';
+    document.getElementById('authSubmit').disabled = false;
+    return true;
+  } catch (e) {
+    authMessage('ساخت اتصال Supabase ناموفق بود: ' + (e.message || e), 'error');
+    return false;
+  }
+}
+async function handleStudioAuth(event){
+  event.preventDefault();
+  clearAuthMessage();
+  if (!supabaseClient){ authMessage('ابتدا کلید عمومی Supabase را در تنظیمات فایل وارد کنید.', 'error'); return; }
+  const email = document.getElementById('authEmail').value.trim();
+  const password = document.getElementById('authPassword').value;
+  if (!email || password.length < 8){ authMessage('ایمیل معتبر و رمز عبور حداقل ۸ کاراکتری وارد کنید.', 'error'); return; }
+  setAuthBusy(true);
+  try {
+    if (studioAuthMode === 'signup') {
+      const {data,error} = await supabaseClient.auth.signUp({
+        email, password,
+        options: { emailRedirectTo: location.href.split('#')[0] }
+      });
+      if (error) throw error;
+      if (data.session) await activateStudioSession(data.session);
+      else authMessage('حساب ساخته شد. ایمیل خود را باز کنید و لینک تأیید را بزنید؛ سپس وارد شوید.', 'success');
+    } else {
+      const {data,error} = await supabaseClient.auth.signInWithPassword({email,password});
+      if (error) throw error;
+      await activateStudioSession(data.session);
+    }
+  } catch (e) {
+    authMessage(e.message || 'ورود یا ثبت‌نام انجام نشد.', 'error');
+  } finally {
+    setAuthBusy(false);
+  }
+}
+async function resetStudioPassword(){
+  clearAuthMessage();
+  if (!supabaseClient){ authMessage('اتصال Supabase هنوز پیکربندی نشده است.', 'error'); return; }
+  const email = document.getElementById('authEmail').value.trim();
+  if (!email){ authMessage('ابتدا ایمیل حساب خود را وارد کنید.', 'error'); return; }
+  try {
+    const {error} = await supabaseClient.auth.resetPasswordForEmail(email, {
+      redirectTo: location.href.split('#')[0]
+    });
+    if (error) throw error;
+    authMessage('اگر این ایمیل در سامانه ثبت شده باشد، لینک بازیابی برای آن ارسال می‌شود.', 'success');
+  } catch(e){ authMessage(e.message || 'ارسال لینک بازیابی ناموفق بود.', 'error'); }
+}
+async function signOutStudio(){
+  if (!supabaseClient) return;
+  try { await supabaseClient.auth.signOut(); } catch(e) { toast('خروج ناموفق بود: ' + (e.message || e), 'err'); }
+  studioUser = null;
+  studioBootedUser = null;
+  showAuthGate('از حساب کاربری خارج شدید.');
+}
+function updateStudioIdentity(user){
+  const email = user?.email || 'کاربر';
+  const name = email.split('@')[0] || 'کاربر';
+  const nameEl = document.getElementById('authUserName');
+  const emailEl = document.getElementById('authUserEmail');
+  const avatar = document.getElementById('authAvatar');
+  if (nameEl) nameEl.textContent = name;
+  if (emailEl) emailEl.textContent = email;
+  if (avatar) avatar.textContent = (name[0] || 'A').toUpperCase();
+}
+function queueCloudProjectSave(project){
+  if (!supabaseClient || !studioUser || !project?.id) return;
+  cloudSaveQueue.set(String(project.id), JSON.parse(JSON.stringify(project)));
+  clearTimeout(cloudSaveTimer);
+  cloudSaveTimer = setTimeout(flushCloudProjectSaves, 850);
+}
+async function flushCloudProjectSaves(){
+  if (!supabaseClient || !studioUser || !cloudSaveQueue.size) return;
+  const batch = [...cloudSaveQueue.values()];
+  cloudSaveQueue.clear();
+  const rows = batch.map(project => ({
+    id:String(project.id),
+    user_id:studioUser.id,
+    data:project,
+    updated_at:new Date(project.updatedAt || Date.now()).toISOString()
+  }));
+  const {error} = await supabaseClient.from('studio_projects').upsert(rows, {onConflict:'id'});
+  if (error) {
+    batch.forEach(p => cloudSaveQueue.set(String(p.id), p));
+    toast('ذخیره محلی انجام شد؛ همگام‌سازی ابری ناموفق بود. تنظیمات جدول و RLS را بررسی کنید.', 'err');
+  } else {
+    const status = document.getElementById('saveStatus');
+    if (status && app.project && batch.some(p => String(p.id) === String(app.project.id))) status.textContent = '✓ ذخیره ابری';
+  }
+}
+async function deleteCloudProject(id){
+  if (!supabaseClient || !studioUser) return;
+  const {error} = await supabaseClient.from('studio_projects').delete().eq('id',String(id)).eq('user_id',studioUser.id);
+  if (error) toast('حذف ابری انجام نشد: ' + error.message, 'err');
+}
+async function syncStudioProjects(){
+  if (!supabaseClient || !studioUser) return;
+  const {data,error} = await supabaseClient.from('studio_projects')
+    .select('id,data,updated_at').eq('user_id',studioUser.id);
+  if (error) {
+    toast('ورود موفق بود؛ برای ذخیره ابری، SQL و سیاست‌های RLS را اجرا کنید.', 'err');
+    renderDashboard();
+    return;
+  }
+  let local = {};
+  try { local = JSON.parse(localStorage.getItem(K_PROJECTS) || '{}'); } catch(e) {}
+  let changed = false;
+  for (const row of (data || [])) {
+    const cloud = row.data;
+    if (!cloud || !cloud.id) continue;
+    const localProject = local[String(row.id)];
+    const cloudTime = Number(cloud.updatedAt || Date.parse(row.updated_at) || 0);
+    const localTime = Number(localProject?.updatedAt || 0);
+    if (!localProject || cloudTime > localTime) {
+      local[String(row.id)] = cloud;
+      changed = true;
+    }
+  }
+  try { localStorage.setItem(K_PROJECTS, JSON.stringify(local)); } catch(e) {}
+  // Upload local-only or newer projects to this authenticated user's private cloud space.
+  const rows = Object.values(local).filter(p => p && p.id).map(project => ({
+    id:String(project.id), user_id:studioUser.id, data:project,
+    updated_at:new Date(project.updatedAt || Date.now()).toISOString()
+  }));
+  if (rows.length) {
+    const {error:upsertError} = await supabaseClient.from('studio_projects').upsert(rows, {onConflict:'id'});
+    if (upsertError) toast('پروژه‌ها روی این دستگاه محفوظ‌اند، اما همگام‌سازی ابری خطا داشت: ' + upsertError.message, 'err');
+  }
+  renderDashboard();
+}
+async function activateStudioSession(session){
+  if (!session?.user) return;
+  studioUser = session.user;
+  hideAuthGate();
+  updateStudioIdentity(studioUser);
+  if (studioBootedUser === studioUser.id) return;
+  studioBootedUser = studioUser.id;
+  await syncStudioProjects();
+  const match = location.hash.match(/#project=(.+)/);
+  if (match) {
+    const id = decodeURIComponent(match[1]);
+    const project = getProject(id);
+    if (project) openProject(id);
+  }
+}
+function installCloudPersistence(){
+  const localSaveProject = saveProject;
+  saveProject = function(){
+    localSaveProject();
+    if (app.project) queueCloudProjectSave(app.project);
+  };
+  const localDeleteProject = deleteProject;
+  deleteProject = function(id){
+    localDeleteProject(id);
+    cloudSaveQueue.delete(String(id));
+    deleteCloudProject(id);
+  };
+}
+
+
+// ═══════════════════════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════════════════════
+async function init(){
+  loadAppTheme();
+  await loadLogo();
+  installCloudPersistence();
+  document.getElementById('authForm').addEventListener('submit', handleStudioAuth);
+  document.getElementById('authSwitch').addEventListener('click', () => setAuthMode(studioAuthMode === 'login' ? 'signup' : 'login'));
+  document.getElementById('authForgot').addEventListener('click', resetStudioPassword);
+  setAuthMode('login');
+  const ready = configureSupabase();
+  if (!ready) return;
+  try {
+    const {data,error} = await supabaseClient.auth.getSession();
+    if (error) throw error;
+    if (data.session) await activateStudioSession(data.session);
+    else showAuthGate();
+    supabaseClient.auth.onAuthStateChange((event, session) => {
+      if (event === 'SIGNED_OUT') {
+        studioUser = null;
+        studioBootedUser = null;
+        showAuthGate();
+      } else if (event === 'SIGNED_IN' && session) {
+        Promise.resolve().then(() => activateStudioSession(session));
+      }
+    });
+  } catch(e) {
+    showAuthGate('برقراری ارتباط با Supabase ناموفق بود: ' + (e.message || e));
+  }
+}
+init();
+</script>
+</body>
+</html>
+
+async function init(){
+  loadAppTheme();
+  await loadLogo();
+  renderDashboard();
+  
+  // Load project from URL hash
+  const m = location.hash.match(/#project=(.+)/);
+  if (m){ const id = m[1]; const p = getProject(id); if (p) openProject(id); }
+}
+init();
+</script>
+</body>
+</html>
